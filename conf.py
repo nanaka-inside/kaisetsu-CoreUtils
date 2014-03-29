@@ -186,6 +186,7 @@ latex_elements = {
   #\\secdef\\@chapter\\@schapter}\n\
 #\\makeatother',
 'preamble': ur"""
+\AtBeginDvi{\special{papersize=182mm,233mm}}
 \fancypagestyle{normal}{
 \fancyhf{}
 \fancyhead[LE,RO]{\nouppercase{\rightmark}}
@@ -201,7 +202,7 @@ latex_elements = {
 \setlength{\topmargin}{-5.4truemm}
 \addtolength{\topmargin}{-\headheight}
 \addtolength{\topmargin}{-\headsep}
-\addtolength{\textheight}{-40truemm}
+\addtolength{\textheight}{-65truemm}
 
 \setlength{\textwidth}{\paperwidth}
 \setlength{\oddsidemargin}{-5.4truemm}
