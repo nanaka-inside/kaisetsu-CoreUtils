@@ -214,22 +214,16 @@ latex_elements = {
 \setlength\parindent{1zw}
 \setlength{\parskip}{0pt}
 \setcounter{secnumdepth}{1}
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{2}
 
 """,
 'classoptions': ',twoside,openany',
 'babel': '\usepackage[english]{babel}',
 'maketitle': '',
-'tableofcontents': r"""
-\thispagestyle{normal}
-\pagestyle{normal}
-\pagenumbering{arabic}
-\setcounter{page}{3}
-"""
 
 }
 
-latex_use_modindex = False
+latex_use_modindex = True
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
@@ -348,3 +342,4 @@ blockdiag_fontpath = './ttf/sazanami-gothic.ttf'
 
 blockdiag_tex_image_format = 'PDF'
 
+# pdf_use_toc = True

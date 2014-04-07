@@ -9,7 +9,8 @@ contents
 .. toctree::
    :maxdepth: 3
 
-   contents.rst
+   maegaki.rst
+   toctree.rst
    coreutils.rst
    coreutils2.rst
 
