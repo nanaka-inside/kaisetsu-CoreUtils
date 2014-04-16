@@ -9,11 +9,7 @@ contents
 .. toctree::
    :maxdepth: 3
 
-   maegaki.rst
-   toctree.rst
-   coreutils.rst
-   coreutils2.rst
-
+   all
 
 Indices and tables
 ===================
