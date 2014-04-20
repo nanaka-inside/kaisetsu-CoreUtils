@@ -1,6 +1,6 @@
 .. raw:: latex
 
-   \clearpage
+   \begin{abstract}
 
 
 はじめに
@@ -89,6 +89,7 @@ Coreutilsは、それらを統合したものです。ChangeLogをみたとこ�
 
 .. raw:: latex
 
+   \end{abstract}
    \tableofcontents
    \phantomsection\label{index::doc}
 
