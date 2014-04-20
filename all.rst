@@ -84,9 +84,6 @@ Coreutilsは、それらを統合したものです。ChangeLogをみたとこ�
 
 .. [#coreutils-manual] http://www.gnu.org/software/coreutils/manual/
 
-.. contents:: これは目次です
-   :depth: 3
-
 .. raw:: latex
 
    \end{abstract}
@@ -1980,7 +1977,7 @@ date -d @946684800
 
    サーバの製造元が日本でない場合、現地時間に合わせてあったりします。このとき、OSのisoイメージからマウントして、サーバにOSをインストールすると、BIOSの時刻を引っ張ってくるので時刻がズレます。そういえば、BIOSであわせるの忘れてた(・ω<)となります。仕方ないので最近はこのようにしてます。当たり前ですけど、時刻がずれている場合は、OSをインストールしたらすぐ時刻をあわせましょう。
 
-   .. cpde-block:: sh
+   .. code-block:: sh
       
       # ntpdate <ntp server name OR IP> && hwclock --systohc && hwclock --adjust
 

@@ -10,11 +10,3 @@ contents
    :maxdepth: 3
 
    all
-
-Indices and tables
-===================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
