@@ -216,6 +216,16 @@ latex_elements = {
 \setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{2}
 
+\def\cleardoublepage{%
+  \clearpage
+    \if@twoside
+	    \ifodd\c@page
+		    \else
+			    \hbox{}\newpage
+				      \if@twocolumn\hbox{}\newpage\fi
+					      \fi
+						    \fi}
+
 """,
 'classoptions': ',twoside,openany',
 'babel': '\usepackage[english]{babel}',
