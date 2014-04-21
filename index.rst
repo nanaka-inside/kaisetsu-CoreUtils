@@ -9,4 +9,4 @@ contents
 .. toctree::
    :maxdepth: 3
 
-   all
+   abstruct
