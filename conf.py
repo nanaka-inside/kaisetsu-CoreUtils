@@ -202,7 +202,7 @@ latex_elements = {
 \setlength{\topmargin}{-5.4truemm}
 \addtolength{\topmargin}{-\headheight}
 \addtolength{\topmargin}{-\headsep}
-\addtolength{\textheight}{-65truemm}
+\addtolength{\textheight}{-70truemm}
 
 \setlength{\textwidth}{\paperwidth}
 \setlength{\oddsidemargin}{-5.4truemm}
