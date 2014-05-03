@@ -10,4 +10,5 @@
 .. toctree::
    :maxdepth: 3
 
+   abstract
    all
