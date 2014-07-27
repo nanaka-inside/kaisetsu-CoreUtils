@@ -140,7 +140,7 @@ html_static_path = ['_static']
 #html_additional_pages = {}
 
 # If false, no module index is generated.
-#html_domain_indices = True
+html_domain_indices = True
 
 # If false, no index is generated.
 #html_use_index = True
@@ -190,11 +190,11 @@ latex_elements = {
 \fancypagestyle{normal}{
 \fancyhf{}
 \fancyhead[LE,RO]{\nouppercase{\rightmark}}
-\fancyfoot[LE,RO]{thin book of coreutils ◆ \thepage}
+\fancyfoot[LE,RO]{explained coreutils ◆ \thepage}
 }
 \fancypagestyle{plain}{
 \fancyhf{}
-\fancyfoot[LE,RO]{thin book of coreutils ◆ \thepage}
+\fancyfoot[LE,RO]{explained coreutils ◆ \thepage}
 \renewcommand{\headrulewidth}{0pt}
 }
 \renewcommand{\plainifnotempty}{\thispagestyle{plain}}
@@ -217,14 +217,14 @@ latex_elements = {
 \setcounter{tocdepth}{2}
 
 \def\cleardoublepage{%
-  \clearpage
-    \if@twoside
-	    \ifodd\c@page
-		    \else
-			    \hbox{}\newpage
-				      \if@twocolumn\hbox{}\newpage\fi
-					      \fi
-						    \fi}
+\clearpage
+\if@twoside
+\ifodd\c@page
+\else
+\hbox{}\newpage
+\if@twocolumn\hbox{}\newpage\fi
+\fi
+\fi}
 
 """,
 'classoptions': ',twoside,openany',
@@ -233,12 +233,10 @@ latex_elements = {
 
 }
 
-latex_use_modindex = True
-
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'coreutils.tex', u'thin book of coreutils',
+  ('index', 'coreutils.tex', u'explained coreutils',
    u'tboffice', 'manual'),
 ]
 
@@ -261,12 +259,13 @@ latex_use_parts = False
 #latex_appendices = []
 
 # If false, no module index is generated.
-#latex_domain_indices = True
+latex_domain_indices = True
+latex_domain_indices = False
 
 # add by tboffice 2012-11-27
-#latex_docclass = {'manual':'jarticle'}
-#latex_docclass = {"howto": "jsarticle", "manual": "jsarticle"}
+latex_docclass = {"howto": "jsarticle", "manual": "jsarticle"}
 latex_docclass = {"howto": "jsarticle", "manual": "jsbook"}
+#latex_docclass = {'manual':'jarticle'}
 
 # -- Options for manual page output --------------------------------------------
 
@@ -305,7 +304,7 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'thin book of coreutils'
+epub_title = u'explained coreutils'
 epub_author = u'nanaka'
 epub_publisher = u'nanaka'
 epub_copyright = u'2014, nanaka'
