@@ -199,10 +199,10 @@ latex_elements = {
 }
 \renewcommand{\plainifnotempty}{\thispagestyle{plain}}
 \setlength{\textheight}{\paperheight}
-\setlength{\topmargin}{-5.4truemm}
+\setlength{\topmargin}{-5truemm}
 \addtolength{\topmargin}{-\headheight}
 \addtolength{\topmargin}{-\headsep}
-\addtolength{\textheight}{-70truemm}
+\addtolength{\textheight}{-65truemm}
 
 \setlength{\textwidth}{\paperwidth}
 \setlength{\oddsidemargin}{-5.4truemm}
