@@ -2743,7 +2743,7 @@ timeout
 
 5秒後に実行が終わるので、ディスクにも安心。
 
-.. [#core-timeout-miss] 原文にはスペルミスがあるので訳すときは注意。余談ですけど、managed commandってなんて訳したらいいんでしょうね
+.. [#core-timeout-miss] 原文にはスペルミスがあるので訳すときは注意。と、書いていたのですが、この本を読んでいただいた方から、Coreutilsにバグレポートを送っていただきました。最新のCoreutilsのマニュアルでは修正済みです。やりとりはこんな感じでした(https://twitter.com/okano_t/status/507278269524082689)。@okano_tさん、ありがとうございました。バグレポートってこんなかんじで送るのかーと知見を得ました
 .. [#core-timeout-foreground] コマンドが2つの状況ってなんでしょうね。バックグラウンドとフォアグラウンドのこと?おしえてエロい人!
 .. [#timeout-saiku] この言い方が適切かどうかは不明
 
@@ -2931,4 +2931,15 @@ Let's enjoy coreutils life. [#commandlinefu]_
 
 .. [#rust] http://www.rust-lang.org/
 .. [#uutils] https://github.com/uutils/coreutils
+
+第3版おわりに
+-------------
+ティアズマガジン109に、本誌が掲載されてしまいました。推薦していただいた方、ありがとうございます。そのおかげか、第2版の在庫がなくなり、こうして第3版を出すことになりました。変更点としては、Coreutilsのマニュアルの ``timeout`` コマンドのところでタイポがあることを指摘していました。それをCoreutilsのバグレポートに送って頂いた方がいらっしゃいまして、それが反映されましたということを追記しました。
+なお、 Coreutils - rejected feature requests [#core-reject-feature-requests]_ というページがありまして、これを訳したかったんですが時間がなく。あとは、コマンドの結果を標準出力とエラー出力にわけて欲しいという要望もあったのでなんとかしたいところ。もろもろ時事ネタとか、とりとめもなく雑多に書いてしまった部分があったのでその辺も整理したら第4版が出るのかもしれません。
+話は変わりますが、私の職場の後輩にも、コマンドの勉強しろと言って、この本を渡しています [#core-hidoi-senpai]_ 。教育機関や企業からの受注をお待ちしております [#core-omachi]_ 。
+
+
+.. [#core-reject-feature-requests] https://www.gnu.org/software/coreutils/rejected_requests.html 
+.. [#core-hidoi-senpai] ひどい先輩がいたもんだ #おい
+.. [#core-omachi] おい
 
