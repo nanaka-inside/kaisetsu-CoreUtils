@@ -5,8 +5,7 @@
 
 ここから、Coreutilsのマニュアルに入ります。Coreutilsのマニュアルの第1章は、「Introduction」から始まっています。少し読んでみましょう。
 
-Coreutilsのマニュアルは、未確認で進行形じゃなかった、作成途中です。
-まさに作っているところで、初心者向けに基本的な概念は説明してないよ！興味があれば改善していってね。
+Coreutilsのマニュアルは、絶賛製作中です！初心者向けに基本的な概念は説明してないよ！興味があれば改善していってね。
 あと、バグを見つけたら ``bug-coreutils@gnu.org`` に送ってね。そのとき、再現環境も一緒に送ってね！ [#senjin-namae]_ だそうです。
 
 .. [#senjin-namae] あとは先人たちの名前が書かれています
@@ -1778,6 +1777,56 @@ true
    $ true ; echo $?
    0
 
+ここで終わるのも何なのでソースを見てみましょうか [#truesource]_ 。mainの部分です。
+
+.. [#truesource] https://github.com/coreutils/coreutils/blob/master/src/true.c
+
+.. code-block:: c
+
+   int
+   main (int argc, char **argv)
+   {
+     /* Recognize --help or --version only if it's the only command-line
+        argument.  */
+     if (argc == 2)
+       {
+         initialize_main (&argc, &argv);
+         set_program_name (argv[0]);
+         setlocale (LC_ALL, "");
+         bindtextdomain (PACKAGE, LOCALEDIR);
+         textdomain (PACKAGE);
+
+         /* Note true(1) will return EXIT_FAILURE in the
+            edge case where writes fail with GNU specific options.  */
+         atexit (close_stdout);
+
+         if (STREQ (argv[1], "--help"))
+           usage (EXIT_STATUS);
+
+         if (STREQ (argv[1], "--version"))
+           version_etc (stdout, PROGRAM_NAME, PACKAGE_NAME, Version, AUTHORS,
+                        (char *) NULL);
+       }
+
+     return EXIT_STATUS;
+   }
+
+EXIT_STATUSは、ご覧のとおり。
+
+.. code-block:: c
+
+   #ifndef EXIT_STATUS
+   # define EXIT_STATUS EXIT_SUCCESS
+   #endif
+
+`false`のソースコード見てみましょうか [#falsesource]_ 。
+
+.. [#falsesource] https://github.com/coreutils/coreutils/blob/master/src/false.c
+
+.. code-block:: c
+
+   #define EXIT_STATUS EXIT_FAILURE
+   #include "true.c"
 
 .. index:: test
 
@@ -1799,6 +1848,7 @@ HOGEという変数がstrかどうかを比較するサンプルです。もし�
 
 .. [#testa] 補足しておくと、 ``test "xstr" = x$HOGE`` というコマンドと等価です
 .. [#testb] とくにオチはない
+.. [#testc] なお、coreutils自体に``[``コマンドがあり、testコマンド読み込んで``[``コマンドをビルドするlbracket.cがあります
 
 expressionの比較のサンプルです。なぜ eq とか ne とかしてしまったんや。 ``>`` にするとリダイレクトに食われるからか。仕方ないね。
 
@@ -1845,6 +1895,18 @@ file,file1,file2というファイルがあった場合は、
 なお、expressionの先頭に ``!`` をつけると否定、 ``expression -a expression`` の ``-a`` はAND条件、同様に ``-o`` はOR条件になります。
 ファイルのタイプ(スペシャルファイルか、シンボリックリンクか、ディレクトリか、ファイルかどうかなど)を判定することもできます。
 
+.. index:: [
+
+[
+----
+manはありませんが、コマンドして存在します。ソースもあります。貼り付けときますね [#lbracket]_ 。
+
+.. [#lbracket] https://github.com/coreutils/coreutils/blob/master/src/lbracket.c
+
+.. code-block:: sh
+
+   #define LBRACKET 1
+   #include "test.c"
 
 .. index:: expr
 
@@ -2266,6 +2328,59 @@ who
 
 .. [#who-akiru] 3分くらい遊んで飽きる
 
+
+.. index:: pinky
+
+pinky
+-----
+マニュアルに載っていません [#nanann]_ 。でも``man pinky``すれば出てきます。
+
+.. [#manualpinky] Coreutilsのリポジトリに、TODOというファイルがありまして、その中のTODOの項目に入っています
+
+なにをするコマンドかと言えば、``finger``の簡易版のコマンドです。``finger``って何ですか？良い質問ですね。ユーザの情報を探すプログラムです [#finger1]_ 。実行してみましょう [#finger2]_ 。
+
+.. code-block:: console
+
+   $ finger
+   Login     Name       Tty      Idle  Login Time   Office     Office Phone
+   root      root       pts/0          Jul 28 13:39 (hostname.example.com)
+   $
+
+.. [#finger1] user information lookup program (man fingerによる)
+.. [#finger2] この実行結果に違和感を感じないのであれば、分かっていないか、分かってる人に分類できます
+
+
+`man` の結果はこんな感じです(抜粋)。
+
+.. code-block:: console
+
+   SYNOPSIS
+     finger [-lmsp] [user ...] [user@host ...]
+
+fingerプロトコルを喋れるサーバにfingerすることができますが、もうそんなホストはないんじゃないんでしょうか。 ``finger linux@kernel.org``ってやると 最新のカーネル情報をとれるらしいんですが、もういないみたい [#finger3]_ 。fingerプロトコルについては、RFC1288 [#rfc1288]_ を参照。
+
+.. [#rfc1288] https://tools.ietf.org/html/rfc1288
+.. [#finger3] https://www.kernel.org/finger_banner っていうのがありますね
+
+対してpinkyはこんな感じ。user@hostがないですね。
+
+.. code-block:: console
+
+   SYNOPSIS
+       pinky [OPTION]... [USER]...
+
+
+単に実行してみます。
+
+.. code-block:: console
+
+   $ pinky 
+   Login    Name                 TTY      Idle   When         Where
+   root     root                 pts/0           Jul 28 13:39 hostname.example.com
+
+pinkyっていうのは、指に対しての小指という意味で名づけたのでしょう。おしまい。
+
+
 システムの状況
 ==============
 システムの情報を変えたり表示したりします。
@@ -2398,6 +2513,15 @@ nproc
 
 .. [#core-nproc] value-serverでの実行結果。こんなサーバなかなかお目にかかれないなぁ。/proc/cpuoinfo見てみたら、本当にCPUが32個あった
 .. [#core-nproc-a] ついでに、このコマンドはcoreutils 8.4あたりの比較的新しいバージョンに入っているみたいです。デフォルトのCentOSの5あたりだと入ってないかも
+
+クールな例 [#nprocool]_ 。
+
+.. [#nprocool] https://www.df7cb.de/blog/2010/nproc.html
+
+.. code-block:: sh
+
+   $ make -j $(nproc)
+
 
 .. index:: uname
 
@@ -2839,6 +2963,9 @@ GNU MP [#core-factor-gmp]_ を使わずにビルドされたfactorコマンド�
 
 .. [#core-factor-gmp] GMPといって、多倍長演算ライブラリのことです。http://gmplib.org を参照
 
+「せんせい！1000までの素数が知りたいです」「よろしい、ならば戦争（ry」と、ならないように素因数分解で応用編です。答えを書いてしまうと面白くないので、あとがきに載せました。考えてみてください。なお、なにかを``factor``したあとにawkで処理してしまうパターンなのでご注意を。
+
+
 .. index:: seq
 
 seq
@@ -2907,17 +3034,43 @@ seq
 ここまで読んでいただきありがとうございました。脱線しまくりの「解説Coreutils」いかがだったでしょうか。原文をまじめに読むと、挫折します。実際に挫折しかけました。
 ただ、通読しておくと、こんなことができるという印象だけ残って、いざというときに、アレが使えるというのを思い出して状況を打破できることがあります。多くを知っておきましょう。損はしません。
 
-最後に、dateコマンドのところで出てきた問題の答えです。前月の最終日の日にちを表示するすワンライナーです。こちらです [#core-last-monthofaday]_ [#core-motto]_ 。
-
-.. [#core-last-monthofaday] $ date -d $(date +%Y%m01)'-1day' +%Y%m%d ちょっとずるい感じもしますがこうするしかなかった（諦め
-.. [#core-motto] もっと短くかける方、いますぐ筆者までリプライください
-
 最後に、このコマンドを俺が一番うまく使えるんだ！という Tips をお持ちの方、この環境だとこの辺でこけるといった検証報告をお持ちの方、この説明違うよ!全然違うよ!!ということを思われた方は、筆者 [#hissya]_ まで連絡を頂けると大変ありがたいです。第2版が出るその日までさようなら。
 
 Let's enjoy coreutils life. [#commandlinefu]_ 
 
 .. [#commandlinefu] ここで書くのも何ですけど、http://www.commandlinefu.com/ が便利
 
+答え合わせ
+----------
+文中で出てきた問題の解答例を解説します。まずは、dateコマンドで出てきた問題の答えです。前月の最終日の日にちを表示するすワンライナーです。こちらです [#core-last-monthofaday]_ [#core-motto]_ 。
+
+次に、`factor` で出てきた、1000までの疎通を表示するワンライナーです。某所でバズったのでご存知の方がいるかもしれません。解答例はこちらです [#factorgei]_ 。
+
+解説すると、`seq`で1から1000までの数値を出して`factor`に食わせます。こうなりますね。
+
+.. code-block:: sh
+   
+   seq 1 1000 | factor | tail
+   991: 991
+   992: 2 2 2 2 2 31
+   993: 3 331
+   994: 2 7 71
+   995: 5 199
+   996: 2 2 3 83
+   997: 997
+   998: 2 499
+   999: 3 3 3 37
+   1000: 2 2 2 5 5 5
+
+次に `awk` を使ってフィールドが2のものだけを抽出します。フィールドというのは、例えば「999: 3 3 3 37」でいうとことの「999:」「3」「37」にあたる部分です。この場合、NFは5です。
+フィールドが2のものは「991: 991」とか「997: 997」とかです。あとは、2番目の文字を出力( print $2 )すれば終わりです。
+
+
+
+.. [#core-last-monthofaday] $ date -d $(date +%Y%m01)'-1day' +%Y%m%d ちょっとずるい感じもしますがこうするしかなかった（諦め
+.. [#core-motto] もっと短くかける方、いますぐ筆者までリプライください
+.. [#factorgei] $ seq 1 1000 | factor | awk 'NF==2{print $2}'
+.. [#factormotoneta] 元ネタはこのへんです http://oki2a24.com/2014/03/03/how-to-print-prime-number-to-10000-with-shell/ https://twitter.com/usptomo/status/479858878310383616
 
 第2版おわりに
 -------------
@@ -2945,6 +3098,6 @@ Let's enjoy coreutils life. [#commandlinefu]_
 
 第4版おわりに
 -------------
-Finalです。だってさー毎回100部ずつ印刷してるので、世の中の必要な人には行き渡ったかなーとおもいきや毎回完売してしまうのが非常に不思議でなりません。こんかいは奮発してちょっと多めに作ったのでしばらくは印刷しません。ここまでお読みいただきありがとうございました。@tboffice先生の次回作にご期待ください [#jikaisaku]_ 。
+Finalです。だってさー毎回100部ずつ印刷してるし、世の中の必要な人には行き渡ったかなーとおもいきや毎回完売してしまうのが非常に不思議でなりません。今回は奮発してちょっと多めに作ったのでしばらくは印刷しません。ここまでお読みいただきありがとうございました。@tboffice先生の次回作にご期待ください [#jikaisaku]_ 。
 
 .. [#jikaisaku] おい！！きいてねーぞ！えーと、次はgnu findutilsとか書けばいいんですかね？？？(乗り気)
