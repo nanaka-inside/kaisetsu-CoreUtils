@@ -13,7 +13,7 @@ Coreutilsのマニュアルは、絶賛製作中です！初心者向けに基�
 
 共通のオプション
 =================
-Coreutilsのコマンド全てで使えるオプションです。
+Coreutilsでの共通のオプションです。
 
 .. index:: help
 
@@ -91,6 +91,31 @@ infoコマンドを打った後は、Emacsのキーバインドなのでそこ�
    a
    b
    c
+
+その他、Coreutilsの共通したこと
+--------------------------------
+実は2章は、2.1章から2.14章まであります。かいつまんで、書いてあることを説明します。
+
+返り値(Exit Status)があります。コマンドを実行したときに数値が返ります。コマンドを実行したあとにすぐ ``echo $?`` をやると出てくる数値です。0が通常にコマンドが終わったことを示し、1は異常があったことを示します。0,1以外の数値を返すコマンドもあります。chroot, env, expr, nice, nohup, numfmt, printenv, sort, stdbuf, test, timeout,tty です。
+
+バックアップオプションがあります。cp, install, ln, mvにあります。ファイル操作するときに元のファイルをどのようにバックアップするか指定します。詳細は各コマンドを参照してください。
+
+ブロックサイズがあります。blocksのサイズを設定することができます。キロバイトやキビバイトとかあれです。df, du, lsあたりで使います。
+
+ユーザ名とIDの曖昧さの除去があります。ユーザ名が数字の場合どうなるんでしょうねえ。chownあたりのコマンドに詳細を書きました。
+
+ランダムデータのソースがあります。`sort -R`コマンドで `--random-source=file` を与えるとfileを元にランダムにソートします。詳細は shufコマンドを参照してください。
+
+スペシャルビルトインコマンドがあります。ビルトインコマンドには、下記があります。
+
+::
+
+   . : break continue eval exec exit export readonly return set shift times trap unset
+
+`nice . foo.sh` や `nice :` 、 `nice exec pwd` は意図した結果にはなりません。bashにもスペシャルビルトインコマンドがあって、 `nice suspend` とかできません。
+
+他には、浮動小数や、シグナル一覧や、標的となるディレクトリの指定や、`/` 取り扱いかた、symlinkのたどり方などがあります。
+
 
 
 ファイルまるまる出力系
@@ -239,6 +264,8 @@ nl
    1  CentOS release 5.7 (Final)
    2  Kernel \r on an \m
     
+@TODO centos6.5あたりにする
+
 
 デフォルトだと、空行には番号が付きません。なお、 ``cat -b file`` と同じです。
 オプションに ``-b a`` を付けると空行でも行番号がつきます。いろいろオプションがあるので値を変更してみてください。
@@ -267,6 +294,8 @@ od
   0000040 020154 071134 067440 020156 067141 056040 005155 000012
   0000057
 
+@TODO centos6.5あたりにする
+
 
 .. index:: base64
 
@@ -280,6 +309,8 @@ RFC 4648 [#rfc4648]_ に則ってデータを変換するコマンドで、133%�
    $ base64 /etc/issue | base64 --decode -i
    CentOS release 5.7 (Final)
    Kernel \r on an \m
+
+@TODO centos6.5あたりにする
 
 .. [#rfc4648] http://tools.ietf.org/html/rfc4648
 
@@ -724,6 +755,19 @@ shuf
 .. [#shuf-ran] これを人はランダム、と呼ぶのだろうか。謎である
 .. [#shuf-sort] sortにも同じオプションがあります。sortのオプション ``-R``, ``--random-sort``, ``--sort=random`` を見てみてください
 .. [#shuf-yodan] マニュアルには、 ``-r`` または ``--repeat`` というオプションがあります。これを使うと、指定した回数だけ繰り返すので、``$ shuf -r -n 50 -e Head Tail`` ができます。誰得。なお、Coreutils 8.21では未実装でした
+
+kというファイルがなかったらどうすんだって？うーん、2.7章にこんなコマンドがあります。seedに与える数によって擬似乱数を生成する関数を作ってそれを実行。決してこの関数を単独で実行してはいかん（実際にやった筆者であった）。
+
+.. code-block:: sh
+
+   get_seeded_random()
+   {
+   seed="$1"
+   openssl enc -aes-256-ctr -pass pass:"$seed" -nosalt \
+   </dev/zero 2>/dev/null
+   }
+
+   shuf -i1-100 --random-source=<(get_seeded_random 42)
 
 .. index:: uniq
 
@@ -1595,7 +1639,7 @@ chgrp
       # chgrp +$numeric_group_id fuga-file
       # chown +0:+0 /tmp/root-file
 
-[#chgrp]_ Coreutilsのマニュアル2.6章に書いてあります。man引いても出てこないです。ちなみに ``+`` はユーザ名やグループ名に使えません。実際に実行してみると「useradd: invalid user name 'hoge+'」だそうです。Solaris 10は例外。
+[#chgrp]_ Coreutilsのマニュアル2.6章に書いてあります。man引いても出てこないです。ユーザ名が数字だったときの対処のため、uid,gidを指定するときは``+``を付けます。ちなみに ``+`` はユーザ名やグループ名に使えません。実際に実行してみると「useradd: invalid user name 'hoge+'」だそうです。Solaris 10は例外。
 
 .. index:: chmod
 
