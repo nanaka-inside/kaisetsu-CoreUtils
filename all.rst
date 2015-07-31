@@ -94,27 +94,34 @@ infoコマンドを打った後は、Emacsのキーバインドなのでそこ�
 
 その他、Coreutilsの共通したこと
 --------------------------------
-実は2章は、2.1章から2.14章まであります。かいつまんで、書いてあることを説明します。
+2章は、2.1章から2.14章まであります。かいつまんで、書いてあることを説明します。
 
-返り値(Exit Status)があります。コマンドを実行したときに数値が返ります。コマンドを実行したあとにすぐ ``echo $?`` をやると出てくる数値です。0が通常にコマンドが終わったことを示し、1は異常があったことを示します。0,1以外の数値を返すコマンドもあります。chroot, env, expr, nice, nohup, numfmt, printenv, sort, stdbuf, test, timeout,tty です。
+返り値(Exit Status)
+   コマンドを実行したときに数値が返ります。コマンドを実行したあとにすぐ ``echo $?`` をやると出てくる数値です。0が通常にコマンドが終わったことを示し、1は異常があったことを示します。0,1以外の数値を返すコマンドもあります。chroot, env, expr, nice, nohup, numfmt, printenv, sort, stdbuf, test, timeout,tty です。
 
-バックアップオプションがあります。cp, install, ln, mvにあります。ファイル操作するときに元のファイルをどのようにバックアップするか指定します。詳細は各コマンドを参照してください。
+バックアップオプション
+   cp, install, ln, mvにあります。ファイル操作するときに元のファイルをどのようにバックアップするか指定します。詳細は各コマンドを参照してください。
 
-ブロックサイズがあります。blocksのサイズを設定することができます。キロバイトやキビバイトとかあれです。df, du, lsあたりで使います。
+ブロックサイズ
+   blocksのサイズを設定することができます。キロバイトやキビバイトとかあれです。df, du, lsあたりで使います。
 
-ユーザ名とIDの曖昧さの除去があります。ユーザ名が数字の場合どうなるんでしょうねえ。chownあたりのコマンドに詳細を書きました。
+ユーザ名とIDの曖昧さの除去
+   ユーザ名が数字の場合どうなってしまうんでしょうか。そのあたりは、chownあたりのコマンドに詳細を書きました。
 
-ランダムデータのソースがあります。`sort -R`コマンドで `--random-source=file` を与えるとfileを元にランダムにソートします。詳細は shufコマンドを参照してください。
+ランダムデータのソース
+   ``sort -R`` コマンドで ``--random-source=file`` を与えるとfileを元にランダムにソートします。詳細は shufコマンドを参照してください。
 
-スペシャルビルトインコマンドがあります。ビルトインコマンドには、下記があります。
+スペシャルビルトインコマンド
+   ``nice . foo.sh`` や ``nice :`` 、 ``nice exec pwd`` は意図した結果にはなりません。bashにもスペシャルビルトインコマンドがあって、 ``nice suspend`` とかできません。
+   ビルトインコマンドには、下記があります。
 
 ::
 
-   . : break continue eval exec exit export readonly return set shift times trap unset
+   . : break continue eval exec exit export readonly return set shift 
+   times trap unset
 
-`nice . foo.sh` や `nice :` 、 `nice exec pwd` は意図した結果にはなりません。bashにもスペシャルビルトインコマンドがあって、 `nice suspend` とかできません。
 
-他には、浮動小数や、シグナル一覧や、標的となるディレクトリの指定や、`/` 取り扱いかた、symlinkのたどり方などがあります。
+他には、浮動小数や、シグナル一覧や、ディレクトリの指定の方法や、`/` 取り扱いかた、symlinkのたどり方などがあります。
 
 
 
@@ -185,6 +192,11 @@ fileというファイルの中身を出力するときにはこうします。
 -A
    -vETと同じ。改行文字、行末文字、タブも表示します
 
+-s
+   連続する空行をひとつにまとめる
+
+
+
 オプションのFILE部分に - を入れると標準入力になります。fとgというファイルがあって、
 
 .. code-block:: sh
@@ -214,9 +226,7 @@ fileというファイルの中身を出力するときにはこうします。
 
 tac
 ---
-linuxの講義があっても、ほぼ出てこないコマンドです。むしろこういう先人たちが作った無駄なコマンドこそ美学だと思うのです [#tachoge]_ 。
 さて、catのあとのtac。お察しの通りです。早速、実行してみましょう。ファイルを作るのが面倒なのでechoしてます。
-
 
 .. code-block:: sh
 
@@ -249,7 +259,6 @@ revと同じ効果をtacでやるには下記 [#taca]_ 。ただし日本語の2
    $ tac -r -s '.\|' myfile
 
 .. [#taca] 単語単位で逆にする例、とrevの効果の例は下記に載っていました。http://bit.ly/SwZTt4
-.. [#tachoge] 使い方によっては全く無駄ではないのです。コマンドを適所に活かすのです。偉い人には以下略
 
 
 .. index:: nl
@@ -261,10 +270,8 @@ nl
 .. code-block:: sh
 
    $ nl /etc/issue
-   1  CentOS release 5.7 (Final)
-   2  Kernel \r on an \m
-    
-@TODO centos6.5あたりにする
+        1	CentOS release 6.6 (Final)
+        2	Kernel \r on an \m
 
 
 デフォルトだと、空行には番号が付きません。なお、 ``cat -b file`` と同じです。
@@ -289,12 +296,10 @@ od
 .. code-block:: sh
 
   $ od /etc/issue
-  0000000 062503 072156 051517 071040 066145 060545 062563 032440
-  0000020 033456 024040 064506 060556 024554 045412 071145 062556
+  0000000 062503 072156 051517 071040 066145 060545 062563 033040
+  0000020 033056 024040 064506 060556 024554 045412 071145 062556
   0000040 020154 071134 067440 020156 067141 056040 005155 000012
   0000057
-
-@TODO centos6.5あたりにする
 
 
 .. index:: base64
@@ -307,10 +312,8 @@ RFC 4648 [#rfc4648]_ に則ってデータを変換するコマンドで、133%�
 .. code-block:: sh
 
    $ base64 /etc/issue | base64 --decode -i
-   CentOS release 5.7 (Final)
+   CentOS release 6.6 (Final)
    Kernel \r on an \m
-
-@TODO centos6.5あたりにする
 
 .. [#rfc4648] http://tools.ietf.org/html/rfc4648
 
@@ -327,30 +330,6 @@ fmt
 デフォルトだと75文字で折り返します。すでに改行されてしまっているテキストファイルでもなんとかしてくれます [#fmta]_ 。
 
 .. [#fmta] wikipediaのサンプルが易しいです。http://en.wikipedia.org/wiki/Fmt
-
-.. index:: numfmt
-
-numfmt
-------
-Coreutils 8.21 (2013-02-14) から使える比較的新しいコマンドです。例えば、4Gを4,000,000に変換してくれます。例をいくつか拾ってみましょう。詳しいことはマニュアルを読みましょう。
-
-.. code-block:: sh
-   
-   $ numfmt --from=auto 1Mi
-   1048576
-
-   $ numfmt --to=si 500000
-   500K
-
-   # Third field (file size) will be shown in SI representation
-   $ ls -log | numfmt --field 3 --header --to=si | head -n4
-   -rw-r--r--  1     94K Aug 23  2011 ABOUT-NLS
-   -rw-r--r--  1    3.7K Jan  7 16:15 AUTHORS
-   -rw-r--r--  1     36K Jun  1  2011 COPYING
-   -rw-r--r--  1       0 Jan  7 15:15 ChangeLog
-
-   $ LC_ALL=en_US.utf8 numfmt --from=iec --grouping 2G
-   2,147,483,648
 
 
 .. index:: pr
@@ -417,6 +396,7 @@ tail
 ``tail -f`` コマンドと同じような働きをする ``tailf`` コマンドがあります。
 結論から言うと、最新のCoreutilsを使っているならどっちも変わりありません [#tailaa]_ 。どちらも inotify イベントを受け取って処理するようになっています。
 もしも、対象のファイルが消えてしまう、あるいは同じファイル名なんだけどログローテートして中身がリセットされるときは、ファイルを読み直す下記のオプションを使いましょう [#tail-F]_ 。
+ついでに8.24から-fしているファイルがリネームされても内容を追っかけることが可能になりました。
 
 .. [#tailaa] coreutils version 7.5でinotifyに対応した模様です。ここを参照しました。http://dev.ariel-networks.com/Members/inoue/tailf/
 .. [#tail-F] follow の f らしい。 ``--max-unchanged-stats=N`` というオプションがあって、 ``-F`` オプションを使った時に、何秒おきにファイルを見に行くか指定することが出来ます。デフォルトは5秒です。一瞬だけ作成されるファイルの中身を書き出しておくときに使えるかも？
@@ -450,7 +430,7 @@ split
    $ ls 
    hogefile xaa  xab  xac  xad  xae  xaf  xag  xah  xai 
 
-1000行ごとに1ファイルを、カレントディレクトリに生成します [#splita]_ 。xaa xab ... となっているのは、あとでcatすると元に戻る [#splitb]_ からです。100行ごとに分割してほしいとか、xxというファイル名いやだというときはこんな感じです。
+1000行ごとに1ファイルを、カレントディレクトリに生成します [#splita]_ 。xaa xab ... となっているのは、あとでcatすると元に戻る [#splitb]_ からです。100行ごとに分割してほしいとか、xxというファイル名いやだというときはこんな感じです。8.24から指定した文字でファイルを分離することができるようになりました。ASCIIのNULL文字でファイルを分割したいというときは ``split -t '\0'``
 
 .. [#splita] でかいサイズのファイルのときには注意。たくさんファイルができるよ！！
 .. [#splitb] cat x* する。xの次はy,zと使っていく。最後どうなるのか実験だ！
@@ -756,7 +736,7 @@ shuf
 .. [#shuf-sort] sortにも同じオプションがあります。sortのオプション ``-R``, ``--random-sort``, ``--sort=random`` を見てみてください
 .. [#shuf-yodan] マニュアルには、 ``-r`` または ``--repeat`` というオプションがあります。これを使うと、指定した回数だけ繰り返すので、``$ shuf -r -n 50 -e Head Tail`` ができます。誰得。なお、Coreutils 8.21では未実装でした
 
-kというファイルがなかったらどうすんだって？うーん、2.7章にこんなコマンドがあります。seedに与える数によって擬似乱数を生成する関数を作ってそれを実行。決してこの関数を単独で実行してはいかん（実際にやった筆者であった）。
+kというファイルがなかったらどうすんだって？うーん、2.7章にこんなコマンドがあります。seedに与える数によって擬似乱数を生成する関数を作ってそれを実行。決してget_seeded_random関数を単独で実行してはいかん（実際にやった筆者であった）。
 
 .. code-block:: sh
 
@@ -1378,6 +1358,8 @@ dd
 
 これでtextファイルの中身のアルファベットが大文字になります！やったね！！ [#dd]_ 
 
+あと、これまでddがいつ終わるかわからない！という声に応えてstatus=progressというオプションが8.24から入りました。あとは察して。
+
 .. [#dd] ucase以外にも、ebcdicやibmといったオプションもあります
 .. [#ddd] なぜddという名前なのかは、'Dataset Definition'の略だとか、'Convert and copy a file'の略でccにしたかったけどすでにそのコマンドがあったのでddにしたとか。真相は自分で確かめよう！
 
@@ -1693,6 +1675,23 @@ df
 ディスクの空き容量を示します。よく使うオプションは、 ``df -h`` です。ディスクの使用量、空き容量がGBやTB単位で出ます。たまに使うオプションは、 ``df -i`` です。inodeの使用量を表示します。ファイルをフォーマットするときにinode数が足りるかどうか、心にとめておくといいことがあるかもしれません。そして、inode枯渇はしばしば深刻な問題を引き起こします。
 ファイルシステムの形式(ext3やtmpfsなど)を表示するときは、 ``df -T`` とします。
 
+実行例です。--oオプション(--output)オプションでいろいろ見れます。必要なカラムだけ表示することもできます。また、例には示しませんが、-lでリモートなマウントは表示しないオプションです [#dfremote]_ 。
+
+.. [#dfremote] 8.21あたりでアクセス出来ないリモートマウントがあるときはハングしたそうですが、8.24で修正
+
+.. code-block:: sh
+
+   # df 
+   Filesystem     1K-blocks    Used Available Use% Mounted on
+   devtmpfs          241308     140    241168   1% /dev
+   tmpfs             251108       0    251108   0% /dev/shm
+   /dev/vda1       20511356 2025232  17437548  11% /
+   # df --o
+   Filesystem     Type      Inodes IUsed   IFree IUse% 1K-blocks    Used    Avail Use% File Mounted on
+   devtmpfs       devtmpfs   60327   529   59798    1%    241308     140   241168   1% -    /dev
+   tmpfs          tmpfs      62777     1   62776    1%    251108       0   251108   0% -    /dev/shm
+   /dev/vda1      ext4     1310720 65729 1244991    6%  20511356 2025232 17437548  11% -    /
+
 .. index:: du
 
 du
@@ -1729,7 +1728,9 @@ stat
 sync
 -----
 メモリにバッファされているデータをディスクに書き込みます。サーバを ``halt`` 、 ``reboot`` あるいは ``shutdown`` する前に ``sync; sync; sync`` するという文化で年齢が分かるかもしれません。
-なお、 ``--help`` , ``--version`` 以外のオプションは無視されます。
+なお、 ``--help`` , ``--version`` 以外のオプションは無視されます [#sync]_ 。
+
+.. [#sync] と、思いきや8.24からオプションが追加されました。マジで！？こんなマイナーなコマンドに！？--dataと--file-systemです。ファイルを指定して、どのようにsync(sync,syncfs,fsync,fdatasync)するのか指定できます。以前はファイルを指定することすらできませんでした
 
 .. index:: truncate
 
@@ -1985,6 +1986,7 @@ tee
            >(md5sum > dvd.md5) \
      > dvd.iso
 
+8.24からエラーが起きた時、どの出力に書き出すか指定できるようになりました(--output-errorオプション)。
 
 ファイル名の操作
 ================
@@ -3016,6 +3018,33 @@ GNU MP [#core-factor-gmp]_ を使わずにビルドされたfactorコマンド�
 .. [#core-factor-gmp] GMPといって、多倍長演算ライブラリのことです。http://gmplib.org を参照
 
 「せんせい！1000までの素数が知りたいです」「よろしい、ならば戦争（ry」と、なってしまったら？ここで答えを書いてしまうと面白くないので、あとがきに載せました。考えてみてください。なお、何かを``factor``したあとにawkで処理してしまうワンライナーです。  
+
+.. index:: numfmt
+
+numfmt
+------
+Coreutils 8.21 (2013-02-14) から使える比較的新しいコマンドです。 [#numfmti]_ 例えば、4Gを4,000,000に変換してくれます。例をいくつか拾ってみましょう。詳しいことはマニュアルを読みましょう。
+
+[#numfmti] ついでに、4章(fmtとかがあるところ)からこの章に説明が移動してました
+
+.. code-block:: sh
+   
+   $ numfmt --from=auto 1Mi
+   1048576
+
+   $ numfmt --to=si 500000
+   500K
+
+   # Third field (file size) will be shown in SI representation
+   $ ls -log | numfmt --field 3 --header --to=si | head -n4
+   -rw-r--r--  1     94K Aug 23  2011 ABOUT-NLS
+   -rw-r--r--  1    3.7K Jan  7 16:15 AUTHORS
+   -rw-r--r--  1     36K Jun  1  2011 COPYING
+   -rw-r--r--  1       0 Jan  7 15:15 ChangeLog
+
+   $ LC_ALL=en_US.utf8 numfmt --from=iec --grouping 2G
+   2,147,483,648
+
 
 .. index:: seq
 
