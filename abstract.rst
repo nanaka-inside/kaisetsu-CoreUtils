@@ -112,10 +112,10 @@ MacにGNU Coreutilsをインストールしたいときは、homebrewでイン�
   githubにあります　https://github.com/coreutils/coreutils/
 
 zipでくれ：
-  http://ftp.gnu.org/gnu/coreutils/　か https://github.com/coreutils/coreutils/releases
+  http://ftp.gnu.org/gnu/coreutils/ か https://github.com/coreutils/coreutils/releases
 
 頻繁に寄せられる質問は：
-  FAQあります　http://www.gnu.org/software/coreutils/faq/coreutils-faq.html
+  FAQです http://www.gnu.org/software/coreutils/faq/coreutils-faq.html
 
 マニュアルは：
   http://www.gnu.org/software/coreutils/manual/
