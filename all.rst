@@ -3250,7 +3250,7 @@ Finalです [#4thfinal]_ 。毎回100部ずつ印刷してるし、世の中の�
 
 末筆ですが、coreutilsの別実装があるので紹介します。
 
-go言語
+go実装
    https://github.com/EricLagerg/go-coreutils クロスプラットフォーム実装です。完成間近！？
 Rust実装
    https://github.com/uutils/coreutils
