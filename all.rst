@@ -5,8 +5,7 @@
 
 ここから、Coreutilsのマニュアルに入ります。Coreutilsのマニュアルの第1章は、「Introduction」から始まっています。少し読んでみましょう。
 
-Coreutilsのマニュアルは、未確認で進行形じゃなかった、作成途中です。
-まさに作っているところで、初心者向けに基本的な概念は説明してないよ！興味があれば改善していってね。
+Coreutilsのマニュアルは、絶賛製作中です！初心者向けに基本的な概念は説明してないよ！興味があれば改善していってね。
 あと、バグを見つけたら ``bug-coreutils@gnu.org`` に送ってね。そのとき、再現環境も一緒に送ってね！ [#senjin-namae]_ だそうです。
 
 .. [#senjin-namae] あとは先人たちの名前が書かれています
@@ -14,7 +13,7 @@ Coreutilsのマニュアルは、未確認で進行形じゃなかった、作�
 
 共通のオプション
 =================
-Coreutilsのコマンド全てで使えるオプションです。
+Coreutilsでの共通のオプションです。
 
 .. index:: help
 
@@ -68,7 +67,7 @@ infoコマンドを打った後は、Emacsのキーバインドなのでそこ�
 
 とやると、 ``-l`` というディレクトリが出来ます [#haifundir]_ 。touchでも同様。
 
-.. [#haifundir] そんな名前のディレクトリとかファイル作るなよ！あとで面倒だぞ！！
+.. [#haifundir] そんな名前のディレクトリとかファイル作るなよ！あとで面倒だぞ！！改行コードだけのファイル名も作れるぞ！作るなよ！！（フラグ
 
 .. index:: -
 
@@ -93,6 +92,43 @@ infoコマンドを打った後は、Emacsのキーバインドなのでそこ�
    b
    c
 
+その他、Coreutilsの共通したこと
+--------------------------------
+2章は、2.1章から2.14章まであります。かいつまんで、書いてあることを説明します。
+
+返り値(Exit Status)
+   コマンドを実行したときに数値が返ります。コマンドを実行したあとにすぐ ``echo $?`` をやると出てくる数値です。0が通常にコマンドが終わったことを示し、1は異常があったことを示します。0,1以外の数値を返すコマンドもあります。chroot, env, expr, nice, nohup, numfmt, printenv, sort, stdbuf, test, timeout,tty です。
+
+バックアップオプション
+   cp, install, ln, mvにあります。ファイル操作するときに元のファイルをどのようにバックアップするか指定します。詳細は各コマンドを参照してください。
+
+ブロックサイズ
+   blocksのサイズを設定することができます。キロバイトやキビバイトとかあれです。df, du, lsあたりで使います。
+
+ユーザ名とIDの曖昧さの除去
+   ユーザ名が数字の場合どうなってしまうんでしょうか。そのあたりは、chownあたりのコマンドに詳細を書きました。
+
+ランダムデータのソース
+   ``sort -R`` コマンドで ``--random-source=file`` を与えるとfileを元にランダムにソートします。詳細は shufコマンドを参照してください。
+
+スペシャルビルトインコマンド
+
+   ::
+      nice . foo.sh
+      nice :
+      nice exec pwd
+
+   といったコマンドは意図した結果にはなりません。bashにもスペシャルビルトインコマンドがあって、 ``nice suspend`` とかできません。
+   ビルトインコマンドには、下記があります。
+
+   ::
+   
+      . : break continue eval exec exit export readonly return set shift 
+      times trap unset
+
+他には、浮動小数や、シグナル一覧や、ディレクトリの指定の方法や、`/` 取り扱いかた、symlinkのたどり方などがあります。
+
+
 
 ファイルまるまる出力系
 ======================
@@ -109,8 +145,9 @@ cat
 
 Linuxの基礎として間違いなく出てくるコマンドではないでしょうか。
 ファイルを引数にとると、そのファイルの中身を表示するコマンドです [#cata]_ 。
-fileというファイルの中身を出力するときにはこうします。
+fileというファイルの中身を出力するときにはこうします [#catcaution]_ 。
 
+.. [#catcaution] でかいファイルとかバイナリとか食わせるなよーどうなっても知らんぞ！！持ち主の分からないファイルは ls -lh とか file コマンドで確認するんだぞ！！
 .. [#cata] 説明が足りないと気づいた方は正しいです。coreutilsのマニュアルの通りの説明は後ほど
 
 .. code-block:: sh
@@ -161,6 +198,11 @@ fileというファイルの中身を出力するときにはこうします。
 -A
    -vETと同じ。改行文字、行末文字、タブも表示します
 
+-s
+   連続する空行をひとつにまとめる
+
+
+
 オプションのFILE部分に - を入れると標準入力になります。fとgというファイルがあって、
 
 .. code-block:: sh
@@ -190,9 +232,7 @@ fileというファイルの中身を出力するときにはこうします。
 
 tac
 ---
-linuxの講義があっても、ほぼ出てこないコマンドです。むしろこういう先人たちが作った無駄なコマンドこそ美学だと思うのです [#tachoge]_ 。
 さて、catのあとのtac。お察しの通りです。早速、実行してみましょう。ファイルを作るのが面倒なのでechoしてます。
-
 
 .. code-block:: sh
 
@@ -225,7 +265,6 @@ revと同じ効果をtacでやるには下記 [#taca]_ 。ただし日本語の2
    $ tac -r -s '.\|' myfile
 
 .. [#taca] 単語単位で逆にする例、とrevの効果の例は下記に載っていました。http://bit.ly/SwZTt4
-.. [#tachoge] 使い方によっては全く無駄ではないのです。コマンドを適所に活かすのです。偉い人には以下略
 
 
 .. index:: nl
@@ -237,9 +276,9 @@ nl
 .. code-block:: sh
 
    $ nl /etc/issue
-   1  CentOS release 5.7 (Final)
-   2  Kernel \r on an \m
-    
+        1	CentOS release 6.6 (Final)
+        2	Kernel \r on an \m
+
 
 デフォルトだと、空行には番号が付きません。なお、 ``cat -b file`` と同じです。
 オプションに ``-b a`` を付けると空行でも行番号がつきます。いろいろオプションがあるので値を変更してみてください。
@@ -263,8 +302,8 @@ od
 .. code-block:: sh
 
   $ od /etc/issue
-  0000000 062503 072156 051517 071040 066145 060545 062563 032440
-  0000020 033456 024040 064506 060556 024554 045412 071145 062556
+  0000000 062503 072156 051517 071040 066145 060545 062563 033040
+  0000020 033056 024040 064506 060556 024554 045412 071145 062556
   0000040 020154 071134 067440 020156 067141 056040 005155 000012
   0000057
 
@@ -279,7 +318,7 @@ RFC 4648 [#rfc4648]_ に則ってデータを変換するコマンドで、133%�
 .. code-block:: sh
 
    $ base64 /etc/issue | base64 --decode -i
-   CentOS release 5.7 (Final)
+   CentOS release 6.6 (Final)
    Kernel \r on an \m
 
 .. [#rfc4648] http://tools.ietf.org/html/rfc4648
@@ -298,30 +337,6 @@ fmt
 
 .. [#fmta] wikipediaのサンプルが易しいです。http://en.wikipedia.org/wiki/Fmt
 
-.. index:: numfmt
-
-numfmt
-------
-Coreutils 8.21 (2013-02-14) から使える比較的新しいコマンドです。例えば、4Gを4,000,000に変換してくれます。例をいくつか拾ってみましょう。詳しいことはマニュアルを読みましょう。
-
-.. code-block:: sh
-   
-   $ numfmt --from=auto 1Mi
-   1048576
-
-   $ numfmt --to=si 500000
-   500K
-
-   # Third field (file size) will be shown in SI representation
-   $ ls -log | numfmt --field 3 --header --to=si | head -n4
-   -rw-r--r--  1     94K Aug 23  2011 ABOUT-NLS
-   -rw-r--r--  1    3.7K Jan  7 16:15 AUTHORS
-   -rw-r--r--  1     36K Jun  1  2011 COPYING
-   -rw-r--r--  1       0 Jan  7 15:15 ChangeLog
-
-   $ LC_ALL=en_US.utf8 numfmt --from=iec --grouping 2G
-   2,147,483,648
-
 
 .. index:: pr
 
@@ -334,17 +349,17 @@ RFCみたいな文章がすぐに出来る！プレーンテキストすばら�
 .. code-block:: sh
 
    cat /etc/issue | pr | pr | head -n 12
-
-
-   2014-04-23 03:04                                                  Page 1
-
-
-
-
-   2014-04-23 03:04                                                  Page 1
-
-
-   CentOS release 5.7 (Final)
+   
+   
+   2015-08-01 10:07                                                1 ページ
+   
+   
+   
+   
+   2015-08-01 10:07                                                1 ページ
+   
+   
+   CentOS release 6.6 (Final)
    Kernel \r on an \m
 
 .. index:: fold
@@ -362,9 +377,10 @@ fold
 head
 -----
 ファイル名を引数に取ると、ファイルの最初の10行を表示するコマンドです。
-``-n 5`` で先頭5行を表示。 ``-c 10KB`` で先頭10キロバイトを表示。バイナリファイルでもOK [#head-tty]_ 。宗教上の理由でheadコマンドを打ちたくない人は、sed 10q と打ってください。
+``-n 5`` で先頭5行を表示。 ``-c 10KB`` で先頭10キロバイトを表示。バイナリファイルでもOK [#head-tty]_ [#headsed]_ 。
 -n のあとにマイナス値を打つとどうなるでしょうか。環境にもよりますが...自分でやってみてください。
 
+.. [#headsed] 宗教上の理由でheadコマンドを打ちたくない人は、sed 10q と打ってください。
 .. [#head-tty] 標準出力に出力して、端末が化けても知らないですよ
 
 .. index:: tail
@@ -387,6 +403,7 @@ tail
 ``tail -f`` コマンドと同じような働きをする ``tailf`` コマンドがあります。
 結論から言うと、最新のCoreutilsを使っているならどっちも変わりありません [#tailaa]_ 。どちらも inotify イベントを受け取って処理するようになっています。
 もしも、対象のファイルが消えてしまう、あるいは同じファイル名なんだけどログローテートして中身がリセットされるときは、ファイルを読み直す下記のオプションを使いましょう [#tail-F]_ 。
+ついでに8.24から-fしているファイルがリネームされても内容を追っかけることが可能になりました。
 
 .. [#tailaa] coreutils version 7.5でinotifyに対応した模様です。ここを参照しました。http://dev.ariel-networks.com/Members/inoue/tailf/
 .. [#tail-F] follow の f らしい。 ``--max-unchanged-stats=N`` というオプションがあって、 ``-F`` オプションを使った時に、何秒おきにファイルを見に行くか指定することが出来ます。デフォルトは5秒です。一瞬だけ作成されるファイルの中身を書き出しておくときに使えるかも？
@@ -451,6 +468,7 @@ split
    21
    22
 
+8.24から指定した文字でファイルを分離することができるようになりました(-tオプション)。ASCIIのNULL文字でファイルを分割したいというときは ``split -t '\0'`` 。
 
 .. index:: csplit
 
@@ -525,10 +543,10 @@ BSDのアルゴリズムで16bitのファイルのチェックサムと1024バ�
 .. code-block:: sh
 
    $ cat /etc/issue
-   CentOS release 5.7 (Final)
+   CentOS release 6.6 (Final)
    Kernel \r on an \m
    $ sum /etc/issue
-   28988     1
+   28978     1
 
 
 .. index:: cksum
@@ -540,7 +558,7 @@ cksum
 .. code-block:: sh
    
    $ cksum /etc/issue
-   2002171979 47 /etc/issue
+   2950197414 47 /etc/issue
 
 .. [#chksum]_ 巡回冗長検査。Cyclic Redundancy Check のこと。詳しくはwikipdiaへ
 
@@ -562,7 +580,7 @@ md5sum
    $ md5sum -c a.sum
    a: OK
 
-.. [#md5sumb] なお、d41d8cd98f00b204e9800998ecf8427e という謎の文字列をググると25万件ヒットしました
+.. [#md5sumb] なお、d41d8cd98f00b204e9800998ecf8427e という謎の文字列をググると47万件ヒットしました
 
 
 
@@ -582,7 +600,7 @@ sha2系コマンド
 .. code-block:: sh
 
    $ sha224sum /etc/issue
-   c4605c7096e8155bd677c183bd27cd40343a21b3168ab4fe13e2295f  /etc/issue
+   49e10814e2665c2a4040344e927ce4b231152b30c55fb53d8dbb7108  /etc/issue
 
 
 仕分系
@@ -725,6 +743,19 @@ shuf
 .. [#shuf-ran] これを人はランダム、と呼ぶのだろうか。謎である
 .. [#shuf-sort] sortにも同じオプションがあります。sortのオプション ``-R``, ``--random-sort``, ``--sort=random`` を見てみてください
 .. [#shuf-yodan] マニュアルには、 ``-r`` または ``--repeat`` というオプションがあります。これを使うと、指定した回数だけ繰り返すので、``$ shuf -r -n 50 -e Head Tail`` ができます。誰得。なお、Coreutils 8.21では未実装でした
+
+kというファイルがなかったらどうすんだって？うーん、2.7章にこんなコマンドがあります。seedに与える数によって擬似乱数を生成する関数を作ってそれを実行。決してget_seeded_random関数を単独で実行してはいかん（実際にやった筆者であった）。
+
+.. code-block:: sh
+
+   get_seeded_random()
+   {
+   seed="$1"
+   openssl enc -aes-256-ctr -pass pass:"$seed" -nosalt \
+   </dev/zero 2>/dev/null
+   }
+
+   shuf -i1-100 --random-source=<(get_seeded_random 42)
 
 .. index:: uniq
 
@@ -918,7 +949,7 @@ join
 
 とあるサイトのバーチャルホスト別のアクセス数を1分ごとに取るスクリプトを書いて、csvで出してみたりするのがお気に入り。hoge-access.min.logはさっきでてきたファイル c の様な出力になっていて、それを3サイト分、csv形式で出力。あとはexcelにでも突っ込んで1分間ごとのアクセス数を色づけして眺めてみるのが良いのではないでしょうか [#joina]_ 。
 
-.. [#joina] ビックデータとかクラウドの時代だとFluentdでなんとかするのが普通でしょうか
+.. [#joina] ビックデータとかクラウドの時代だとFluentdでなんとかするのが普通かも
 
 .. code-block:: sh
 
@@ -1097,7 +1128,7 @@ ls
    逆順にソート
 
 -S
-   ファイルの大きさ順にソートします。デフォルトは大きい順に並びます。小さい順に並べるなら、 ``-rS`` 。
+   ファイルの大きさ順にソートします。デフォルトは大きい順に並びます。小さい順に並べるなら、 ``-rS`` 
 
 -t 
    ファイルの更新時間(mtime)順にソートします
@@ -1120,7 +1151,7 @@ ls
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 -1
-   1ファイル1行で表示します。ファイルの一覧をファイルに書くときに使います
+   1ファイル1行で表示します。ファイルの一覧をファイルに書き出すときに使います
 
 -C
    ファイルを縦方向に表示します。デフォルトの動作です
@@ -1216,7 +1247,7 @@ dir
 
 vdir
 ----
-``ls -l -b`` と同じ
+``ls -l -b`` と同じ。
 
 .. index:: dircolors
 
@@ -1248,7 +1279,7 @@ lsのカラー設定 [#dirc]_ 。呪文なので唱えて下さい。実行方�
 cp
 ---
 ファイルやディレクトリをコピーします。コピーするだけなら問題ないんですが...というところ。細かい仕様を把握しておかないと事故が起きるので [#cpa]_ 、もし本番環境でやるなら事前テストすることをおすすめします。とくに、 ``*`` や、末尾 ``/`` のあるなしで効果が変わります。
-さて、もう少し細かい挙動を見て行きましょう。原文では、デフォルトだとディレクトリーはコピーしないけど、-R,-a,-rオプションをつけると、ディレクトリもコピーするようになるよ、だそうです。シンボリックリンクからコピーするときは、そのシンボリックリンクしかコピーしないけど、--archive(--a),-d,--dereference(-L),--no-dereference(-P),-Hオプションがあるとデフォルトの設定を上書きしちゃうよ、とのこと。
+さて、もう少し細かい挙動を見て行きましょう。原文では、デフォルトだとディレクトリはコピーしないけど、-R,-a,-rオプションをつけると、ディレクトリもコピーするようになるよ、だそうです。シンボリックリンクからコピーするときは、そのシンボリックリンクしかコピーしないけど、--archive(--a),-d,--dereference(-L),--no-dereference(-P),-Hオプションがあるとデフォルトの設定を上書きしちゃうよ、とのこと。
 
 オプションを解説します。
 
@@ -1308,7 +1339,7 @@ cp
 .. topic:: cpの速度
 
    cpの速度と進捗状況が知りたい時があります。こんなときは、pv(pipe viewer) を使いましょう。
-   yumのextra経由でインストールするか、公式サイトからRPMを落としてきてインストールします。
+   yumのextra経由でインストールするか、公式サイトからRPMを落としてきてインストールします。pvの実行例です：
 
    .. code-block:: sh
       
@@ -1334,6 +1365,8 @@ dd
    $ dd conv=ucase if=text of=test2
 
 これでtextファイルの中身のアルファベットが大文字になります！やったね！！ [#dd]_ 
+
+あと、これまでddがいつ終わるかわからない！という声に応えてstatus=progressというオプションが8.24から入りました。あとは察して。
 
 .. [#dd] ucase以外にも、ebcdicやibmといったオプションもあります
 .. [#ddd] なぜddという名前なのかは、'Dataset Definition'の略だとか、'Convert and copy a file'の略でccにしたかったけどすでにそのコマンドがあったのでddにしたとか。真相は自分で確かめよう！
@@ -1596,7 +1629,7 @@ chgrp
       # chgrp +$numeric_group_id fuga-file
       # chown +0:+0 /tmp/root-file
 
-[#chgrp]_ Coreutilsのマニュアル2.6章に書いてあります。man引いても出てこないです。ちなみに ``+`` はユーザ名やグループ名に使えません。実際に実行してみると「useradd: invalid user name 'hoge+'」だそうです。Solaris 10は例外。
+[#chgrp]_ Coreutilsのマニュアル2.6章に書いてあります。man引いても出てこないです。ユーザ名が数字だったときの対処のため、uid,gidを指定するときは``+``を付けます。ちなみに ``+`` はユーザ名やグループ名に使えません。実際に実行してみると「useradd: invalid user name 'love+'」だそうです。Solaris 10は例外。
 
 .. index:: chmod
 
@@ -1650,6 +1683,28 @@ df
 ディスクの空き容量を示します。よく使うオプションは、 ``df -h`` です。ディスクの使用量、空き容量がGBやTB単位で出ます。たまに使うオプションは、 ``df -i`` です。inodeの使用量を表示します。ファイルをフォーマットするときにinode数が足りるかどうか、心にとめておくといいことがあるかもしれません。そして、inode枯渇はしばしば深刻な問題を引き起こします。
 ファイルシステムの形式(ext3やtmpfsなど)を表示するときは、 ``df -T`` とします。
 
+実行例です。--o(--output)オプションでいろいろ見れます。必要なカラムだけ表示することもできます。また、例には示しませんが、-lでリモートなマウントは表示しないオプションです [#dfremote]_ 。
+
+.. [#dfremote] 8.21あたりでアクセス出来ないリモートマウントがあるときはハングしたそうですが、8.24で修正
+
+.. code-block:: sh
+
+   # df 
+   Filesystem     1K-blocks    Used Available Use% Mounted on
+   devtmpfs          241308     140    241168   1% /dev
+   tmpfs             251108       0    251108   0% /dev/shm
+   /dev/vda1       20511356 2025232  17437548  11% /
+   # df --o
+   Filesystem     Type      Inodes IUsed   IFree IUse% 1K-blocks    Used 
+   devtmpfs       devtmpfs   60327   529   59798    1%    241308     140 
+   tmpfs          tmpfs      62777     1   62776    1%    251108       0 
+   /dev/vda1      ext4     1310720 65729 1244991    6%  20511356 2025232 
+   # (続き)
+      Avail Use% File Mounted on
+     241168   1% -    /dev
+     251108   0% -    /dev/shm
+   17437548  11% -    / 
+
 .. index:: du
 
 du
@@ -1686,7 +1741,9 @@ stat
 sync
 -----
 メモリにバッファされているデータをディスクに書き込みます。サーバを ``halt`` 、 ``reboot`` あるいは ``shutdown`` する前に ``sync; sync; sync`` するという文化で年齢が分かるかもしれません。
-なお、 ``--help`` , ``--version`` 以外のオプションは無視されます。
+なお、 ``--help`` , ``--version`` 以外のオプションは無視されます [#sync]_ 。
+
+.. [#sync] と、思いきや8.24からオプションが追加されました。マジで！？こんなマイナーなコマンドに！？　--dataと--file-systemです。ファイルを指定して、どのようにsync(sync,syncfs,fsync,fdatasync)するのか指定できます。
 
 .. index:: truncate
 
@@ -1778,6 +1835,56 @@ true
    $ true ; echo $?
    0
 
+ここで終わるのも何なのでソースを見てみましょうか [#truesource]_ 。mainの部分です。
+
+.. [#truesource] https://github.com/coreutils/coreutils/blob/master/src/true.c
+
+.. code-block:: c
+
+   int
+   main (int argc, char **argv)
+   {
+     /* Recognize --help or --version only if it's the only command-line
+        argument.  */
+     if (argc == 2)
+       {
+         initialize_main (&argc, &argv);
+         set_program_name (argv[0]);
+         setlocale (LC_ALL, "");
+         bindtextdomain (PACKAGE, LOCALEDIR);
+         textdomain (PACKAGE);
+
+         /* Note true(1) will return EXIT_FAILURE in the
+            edge case where writes fail with GNU specific options.  */
+         atexit (close_stdout);
+
+         if (STREQ (argv[1], "--help"))
+           usage (EXIT_STATUS);
+
+         if (STREQ (argv[1], "--version"))
+           version_etc (stdout, PROGRAM_NAME, PACKAGE_NAME, Version, AUTHORS,
+                        (char *) NULL);
+       }
+
+     return EXIT_STATUS;
+   }
+
+EXIT_STATUSは、ご覧のとおり。
+
+.. code-block:: c
+
+   #ifndef EXIT_STATUS
+   # define EXIT_STATUS EXIT_SUCCESS
+   #endif
+
+おっと、ここで、 ``false`` のソースコード見てみましょうか [#falsesource]_ 。
+
+.. [#falsesource] https://github.com/coreutils/coreutils/blob/master/src/false.c
+
+.. code-block:: c
+
+   #define EXIT_STATUS EXIT_FAILURE
+   #include "true.c"
 
 .. index:: test
 
@@ -1799,6 +1906,7 @@ HOGEという変数がstrかどうかを比較するサンプルです。もし�
 
 .. [#testa] 補足しておくと、 ``test "xstr" = x$HOGE`` というコマンドと等価です
 .. [#testb] とくにオチはない
+.. [#testc] なお、coreutils自体に``[``コマンドがあり、testコマンド読み込んで``[``コマンドをビルドするlbracket.cがあります
 
 expressionの比較のサンプルです。なぜ eq とか ne とかしてしまったんや。 ``>`` にするとリダイレクトに食われるからか。仕方ないね。
 
@@ -1845,6 +1953,18 @@ file,file1,file2というファイルがあった場合は、
 なお、expressionの先頭に ``!`` をつけると否定、 ``expression -a expression`` の ``-a`` はAND条件、同様に ``-o`` はOR条件になります。
 ファイルのタイプ(スペシャルファイルか、シンボリックリンクか、ディレクトリか、ファイルかどうかなど)を判定することもできます。
 
+.. index:: [
+
+[
+----
+manはありませんが、コマンドして存在します。ソースもあります。貼り付けときますね [#lbracket]_ 。
+
+.. [#lbracket] https://github.com/coreutils/coreutils/blob/master/src/lbracket.c
+
+.. code-block:: sh
+
+   #define LBRACKET 1
+   #include "test.c"
 
 .. index:: expr
 
@@ -1879,6 +1999,7 @@ tee
            >(md5sum > dvd.md5) \
      > dvd.iso
 
+8.24からエラーが起きた時、どの出力に書き出すか指定できるようになりました(--output-errorオプション)。
 
 ファイル名の操作
 ================
@@ -2229,7 +2350,7 @@ who
 -l
   --loginと同じです。訳すのが面倒だったので実際に打つとこんな感じです [#core-who-l]_ 
 
-.. [#core-who-l] value-serverで試していてうすうす気づいていたのですが、これ、物理コンソールにrootでログインしっぱなしになってないですかね
+.. [#core-who-l] 以前契約していたvalue-serverで試しました。うすうす気づいていたのですが、これ、物理コンソールにrootでログインしっぱなしになってないですかね
 
 .. code-block:: sh
    
@@ -2265,6 +2386,59 @@ who
 だそうです。あとは察してください [#who-akiru]_ 。
 
 .. [#who-akiru] 3分くらい遊んで飽きる
+
+
+.. index:: pinky
+
+pinky
+-----
+マニュアルに載っていません [#manualpinky]_ 。でも ``man pinky`` すれば出てきます。
+
+.. [#manualpinky] Coreutilsのリポジトリに、TODOというファイルがありまして、その中のTODOの項目に入っています
+
+なにをするコマンドかと言えば、 ``finger`` の簡易版のコマンドです。 ``finger`` って何ですか？良い質問ですね。ユーザの情報を探すプログラムです [#finger1]_ 。実行してみましょう [#finger2]_ 。
+
+.. code-block:: console
+
+   $ finger
+   Login     Name       Tty      Idle  Login Time   Office     Office Phone
+   root      root       pts/0          Jul 28 13:39 (hostname.example.com)
+   $
+
+.. [#finger1] user information lookup program (man fingerによる)
+.. [#finger2] この実行結果に違和感を感じないのであれば、分かっていないか、分かってる人に分類できます
+
+
+manの結果はこんな感じです(抜粋)。
+
+.. code-block:: console
+
+   SYNOPSIS
+     finger [-lmsp] [user ...] [user@host ...]
+
+fingerプロトコルを喋れるサーバにfingerすることができますが、もうそんなホストはないんじゃないんでしょうか。 ``finger linux@kernel.org`` ってやると 最新のカーネル情報をとれるらしいんですが、もういないみたい [#finger3]_ 。fingerプロトコルについては、RFC1288 [#rfc1288]_ を参照。
+
+.. [#rfc1288] https://tools.ietf.org/html/rfc1288
+.. [#finger3] https://www.kernel.org/finger_banner っていうのがありますね
+
+対してpinkyはこんな感じ。user@hostがないですね。
+
+.. code-block:: console
+
+   SYNOPSIS
+       pinky [OPTION]... [USER]...
+
+
+単に実行してみます。
+
+.. code-block:: console
+
+   $ pinky 
+   Login    Name       TTY      Idle   When         Where
+   root     root       pts/0           Jul 28 13:39 hostname.example.com
+
+pinkyっていうのは、指に対しての小指という意味で名づけたのでしょう。おしまい。
+
 
 システムの状況
 ==============
@@ -2350,7 +2524,7 @@ date -d @946684800
 .. topic:: dateとcrontab
 
    crontabに ``date +%Y%m%d`` と書くと正しく動作しません。 ``%`` をエスケープしないといけないんだよ、な、なんだってーΩ Ω
-   筆者もハマったことがあります。 ``date +\%Y\%m\%d`` と書きましょう。これで動く！
+   筆者もハマったことがあります。 ``date +\%Y\%m\%d`` と書きましょう。これで動く！まあ、こうやって書くのが面倒ならスクリプトファイルにして、それを呼び出せばいいんですけど。
 
 
 .. topic:: 時刻合わせ
@@ -2396,8 +2570,17 @@ nproc
    $ nproc
    32
 
-.. [#core-nproc] value-serverでの実行結果。こんなサーバなかなかお目にかかれないなぁ。/proc/cpuoinfo見てみたら、本当にCPUが32個あった
+.. [#core-nproc] 以前契約していたvalue-serverでの実行結果。こんなサーバなかなかお目にかかれないなぁ。/proc/cpuoinfo見てみたら、本当にCPUが32個あった
 .. [#core-nproc-a] ついでに、このコマンドはcoreutils 8.4あたりの比較的新しいバージョンに入っているみたいです。デフォルトのCentOSの5あたりだと入ってないかも
+
+クールな例 [#nprocool]_ 。
+
+.. [#nprocool] https://www.df7cb.de/blog/2010/nproc.html
+
+.. code-block:: sh
+
+   $ make -j $(nproc)
+
 
 .. index:: uname
 
@@ -2455,9 +2638,20 @@ hostname
 
 hostid
 ------
-ホスト識別子を16進数で表示します。ホスト識別子ってなんやねん、という人がググってください [#core-hostid]_ 。
+ホスト識別子を16進数で表示します。ソースを見ると分かるんですが、gethostid関数を呼んでいます。試しにDigitalOceanのサーバでやってみるとこんな感じ。
 
-.. [#core-hostid] つまり、筆者もよくわかってない
+.. code-block:: sh
+
+   $ hostid
+   00000000
+
+なんでやねん。原文の例にはこうあります。
+
+:: 
+
+   For example, here’s what it prints on one system I use:
+   $ hostid
+   1bac013d
 
 .. index:: uptime
 
@@ -2623,7 +2817,15 @@ niceをつけてコマンドを実行すると、nice値が10になります。 
    $ sudo nice -n -20 nice
    -20
 
-ちなみに、 ``renice`` コマンドで実行中のプロセスのnice値を変更することができます。
+コマンドまとめてniceする場合はこんな感じです [#nicem]_ 。
+
+.. [#nicem] http://unix.stackexchange.com/questions/22146/set-niceness-to-piped-command
+
+.. code-block:: sh
+
+   $ nice -n 15 sh -c "command | command | command"
+
+ちなみに、 ``renice`` コマンドで実行中のプロセスのnice値を変更することができます。多分いける。
 
 .. index:: nohup
 
@@ -2728,10 +2930,10 @@ timeout
   2. 端末からコマンドを直接送信したい場合、たとえばCtrl-Cなど
 
 -k duration, --kill-after=duration
-  監視コマンドは、指定した期間のあとに、KILLシグナルを送ることによってkillされていることを確認します。選択された信号が致命的でないと証明された場合、このオプションを指定しない場合、コマンドをkillすることはありません。
+  監視コマンドは、指定した期間のあとに、KILLシグナルを送ることによってkillされていることを確認します。選択された信号が致命的でないと証明された場合、このオプションを指定しない場合、コマンドをkillすることはありません
 
 -s signal, --signal=signal
-  デフォルトであるTERMシグナルではなく、タイムアウトの時にsignalをコマンドに送ります。signalはHUPや数値で指定します
+  デフォルトであるTERMシグナルではなく、タイムアウトの時にsignalをコマンドに送ります。signalはHUPや数値で指定します。単に数値の場合は秒です
 
 期間に関しては、小数の後に、s(秒、デフォルト)、分であるm、時間h、日dをとることができます。期間が0の場合、タイムアウトになりません。実質のタイムアウトの期間はシステムの状態に依存します。特に注意しないといけないのは、1秒以内のタイムアウトです。
 
@@ -2799,7 +3001,7 @@ sleep
 
 .. [#core-sleep-pi] 筆者の部屋に転がってたfreeBSDの入った実機で echo $'\a' を実行してみたら「ピッ」って鳴った。手元のMacBookAirのターミナルでやってみても鳴った
 .. [#core-sleep-beep] クラウド上のサーバがピーピーなっちゃいますよ（ホントかなぁ
-.. [#core-sleep-beep2] value-serverで大量に実行してみたけど怒られなかったし、いいんじゃないでしょうか。そもそも一般ユーザで鳴るのかね？まあいいか
+.. [#core-sleep-beep2] 以前契約していたvalue-serverで大量に実行してみたけど怒られなかったし、いいんじゃないでしょうか。そもそも一般ユーザで鳴るのかね？まあいいか
 
 数値操作
 ========
@@ -2838,6 +3040,35 @@ factor
 GNU MP [#core-factor-gmp]_ を使わずにビルドされたfactorコマンドは、single-precision算術が有効になります。その算術方法は、小さい数字を計算することが得意で、2^64以上の数字はサポートしていません。
 
 .. [#core-factor-gmp] GMPといって、多倍長演算ライブラリのことです。http://gmplib.org を参照
+
+「せんせい！1000までの素数が知りたいです」「よろしい、ならば戦争（ry」と、なってしまったら？ここで答えを書いてしまうと面白くないので、あとがきに載せました。
+
+.. index:: numfmt
+
+numfmt
+------
+Coreutils 8.21 (2013-02-14) から使える比較的新しいコマンドです [#numfmti]_ 。 例えば、4Gを4,000,000に変換してくれます。例をいくつか拾ってみましょう。詳しいことはマニュアルを読みましょう。
+
+.. [#numfmti] ついでに、4章(fmtとかがあるところ)からこの章に説明が移動してました
+
+.. code-block:: sh
+   
+   $ numfmt --from=auto 1Mi
+   1048576
+
+   $ numfmt --to=si 500000
+   500K
+
+   # Third field (file size) will be shown in SI representation
+   $ ls -log | numfmt --field 3 --header --to=si | head -n4
+   -rw-r--r--  1     94K Aug 23  2011 ABOUT-NLS
+   -rw-r--r--  1    3.7K Jan  7 16:15 AUTHORS
+   -rw-r--r--  1     36K Jun  1  2011 COPYING
+   -rw-r--r--  1       0 Jan  7 15:15 ChangeLog
+
+   $ LC_ALL=en_US.utf8 numfmt --from=iec --grouping 2G
+   2,147,483,648
+
 
 .. index:: seq
 
@@ -2901,22 +3132,92 @@ seq
    20140410
 
 
+答え合わせ
+===========
+文中で出てきた問題の解答例と解説です。脚注の[練習問題]は、自習ということでひとつ。
+
+date
+-------
+
+dateコマンドで出てきた問題の解答です。前月の最終日の日にちを表示するすワンライナーでしたね。こちらです。
+
+.. code-block:: sh
+
+   date -d $(date +%Y%m01)'-1day' +%Y%m%d
+
+計算しててずるい感じしますがこうするしかなかったです。もっと短くかける方、いますぐ筆者までリプライください。
+
+
+factor
+-------
+
+``factor`` で出てきた、1000までの素数を表示するワンライナーです。某所でバズったのでご存知の方がいるかもしれません [#factormotoneta]_ 。
+解答例はこちらです。
+
+.. [#factormotoneta] 元ネタはこのへんです http://oki2a24.com/2014/03/03/how-to-print-prime-number-to-10000-with-shell/ https://twitter.com/usptomo/status/479858878310383616
+
+.. code-block:: sh
+
+   $ seq 1 1000 | factor | awk 'NF==2{print $2}'
+
+解説すると、 ``seq`` で1から1000までの数値を出して ``factor`` に食わせます。
+
+.. code-block:: sh
+   
+   seq 1 1000 | factor | tail
+   991: 991
+   992: 2 2 2 2 2 31
+   993: 3 331
+   994: 2 7 71
+   995: 5 199
+   996: 2 2 3 83
+   997: 997
+   998: 2 499
+   999: 3 3 3 37
+   1000: 2 2 2 5 5 5
+
+次に ``awk`` を使ってフィールドの数が2つのものだけを抽出します。フィールドというのは、例えば「999: 3 3 3 37」でいうとことの「999:」「3」「37」にあたる部分です。この場合、フィールド数は5です。
+フィールドが2のものは「991: 991」とか「997: 997」とかで、素数になっていますね。あとは、2番目の文字を出力( print $2 )すれば終わりです。
+
+さて、sed派の皆さん、お待たせしました。 ``sed`` で処理をするならこちらです [#factorsed]_ 。解説をすると、
+
+.. code-block:: sh
+
+   seq 1 1000 | factor | sed -n '/: [^ ]*$/{s/.*: //;p}'
+
+オプションの解説です [#factorsed]_ 。
+
+
+.. [#factorsed] sed方式は @richmikan 氏に解説含め教えていただきました
+
+-nオプション
+  pコマンド（print）が指定されない限り勝手に表示しない
+
+/: [^ ]*$/
+  AWKでいうパターンに相当するもので、": "の後ろにスペース無し（つまり素数行）だけ反応する
+
+{～}
+  上記のパターンにマッチしたら括弧の中のコマンドを実行
+
+s/.*: //
+  1列目の文字列を消す
+
+p
+  その結果を表示する
+
+
 おわりに
 ========
 
 ここまで読んでいただきありがとうございました。脱線しまくりの「解説Coreutils」いかがだったでしょうか。原文をまじめに読むと、挫折します。実際に挫折しかけました。
 ただ、通読しておくと、こんなことができるという印象だけ残って、いざというときに、アレが使えるというのを思い出して状況を打破できることがあります。多くを知っておきましょう。損はしません。
 
-最後に、dateコマンドのところで出てきた問題の答えです。前月の最終日の日にちを表示するすワンライナーです。こちらです [#core-last-monthofaday]_ [#core-motto]_ 。
-
-.. [#core-last-monthofaday] $ date -d $(date +%Y%m01)'-1day' +%Y%m%d ちょっとずるい感じもしますがこうするしかなかった（諦め
-.. [#core-motto] もっと短くかける方、いますぐ筆者までリプライください
-
 最後に、このコマンドを俺が一番うまく使えるんだ！という Tips をお持ちの方、この環境だとこの辺でこけるといった検証報告をお持ちの方、この説明違うよ!全然違うよ!!ということを思われた方は、筆者 [#hissya]_ まで連絡を頂けると大変ありがたいです。第2版が出るその日までさようなら。
 
 Let's enjoy coreutils life. [#commandlinefu]_ 
 
 .. [#commandlinefu] ここで書くのも何ですけど、http://www.commandlinefu.com/ が便利
+
 
 
 第2版おわりに
@@ -2934,12 +3235,27 @@ Let's enjoy coreutils life. [#commandlinefu]_
 
 第3版おわりに
 -------------
-ティアズマガジン109に、本誌が掲載されてしまいました。推薦していただいた方、ありがとうございます。そのおかげか、第2版の在庫がなくなり、こうして第3版を出すことになりました。変更点としては、Coreutilsのマニュアルの ``timeout`` コマンドのところでタイポがあることを指摘していました。それをCoreutilsのバグレポートに送って頂いた方がいらっしゃいまして、それが反映されましたということを追記しました。
+ティアズマガジン109 [#tiamaga109]_ に、本誌が掲載されてしまいました。推薦していただいた方、ありがとうございます。そのおかげか、第2版の在庫がなくなり、こうして第3版を出すことになりました。変更点としては、Coreutilsのマニュアルの ``timeout`` コマンドのところでタイポがあることを指摘していました。それをCoreutilsのバグレポートに送って頂いた方がいらっしゃいまして、それが反映されましたということを追記しました。
 なお、 Coreutils - rejected feature requests [#core-reject-feature-requests]_ というページがありまして、これを訳したかったんですが時間がなく。あとは、コマンドの結果を標準出力とエラー出力にわけて欲しいという要望もあったのでなんとかしたいところ。もろもろ時事ネタとか、とりとめもなく雑多に書いてしまった部分があったのでその辺も整理したら第4版が出るのかもしれません。
 話は変わりますが、私の職場の後輩にも、コマンドの勉強しろと言って、この本を渡しています [#core-hidoi-senpai]_ 。教育機関や企業からの受注をお待ちしております [#core-omachi]_ 。
 
-
+.. [#tiamaga109] 創作オンリーの即売会・コミティアのカタログのこと
 .. [#core-reject-feature-requests] https://www.gnu.org/software/coreutils/rejected_requests.html 
 .. [#core-hidoi-senpai] ひどい先輩がいたもんだ #おい
 .. [#core-omachi] おい
+
+第4版おわりに
+-------------
+Finalです [#4thfinal]_ 。毎回100部ずつ印刷してるし、世の中の必要な人には行き渡ったかなーとおもいきや毎回完売してしまうのが非常に不思議でなりません。今回は奮発してちょっと多めに作ったのでしばらくは印刷しません。ここまでお読みいただきありがとうございました。@tboffice先生の次回作にご期待ください [#jikaisaku]_ 。
+
+末筆ですが、coreutilsの別実装があるので紹介します。
+
+go実装
+   https://github.com/EricLagerg/go-coreutils クロスプラットフォーム実装です。完成間近！？
+Rust実装
+   https://github.com/uutils/coreutils
+
+
+.. [#4thfinal] 多分
+.. [#jikaisaku] おい！！きいてねーぞ！えーと、次はgnu findutilsとか書けばいいんですかね？？？(乗り気)
 

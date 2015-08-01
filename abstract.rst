@@ -6,7 +6,7 @@
 はじめに
 ========
 
-筆者まえがき
+まえがき
 -------------
 
 「情報というのは面白いもので、こちらから探しにいかないとないのと同じで、ゲームなどでも攻略に行き詰まったりして、ネットでWikiを調べてみたり、攻略本を探してようやく出てくるという性質でして、人間、必要に駆られないと、なかなか新しい情報を得ようとしない [#core-bukkyo]_ ものです。」 [#coreutils-monodesu]_
@@ -15,19 +15,21 @@
 .. [#coreutils-monodesu] 蝉丸P (2012). 蝉丸Pのつれづれ仏教講座 株式会社エンターブレイン p.263
 
 
-ごあいさつ
-----------
-筆者の@tboffice [#twitter-tboffice]_ と申します。この本は、GNU Coreutils [#coreutils-url]_ のマニュアル [#coreutils-manual]_ をひと通り眺めてみて、解説をしてみようというコンセプトの本に書かれた本です。
-弊サークル・第7開発セクション [#dai7sec]_ が発行してきた同人誌「ななかInside PRESS」の2号と3号にまたがって掲載された「Coreutils大全」という連載を一冊の本にまとめました。
+この本は何？
+-----------
+この本は、GNU Coreutils [#coreutils-url]_ の執筆時点の最新のマニュアル [#coreutils-manual]_ をひと通り眺めてみて、解説をしてみようというコンセプトの本に書かれた本です [#ikisatsu]_ 。
+Coreutils 8.24 (2015-07-03 release) の内容まで盛り込んでいます。
 
-なぜ今、Coreutilsなのか。
+.. [#ikisatsu] もともとは、弊サークル・第7開発セクションが発行してきた同人誌「ななかInside PRESS」の2号と3号にまたがって掲載された「Coreutils大全」という連載を一冊の本にまとめたものが初版でした
+
+
+対象読者
+--------
 
 Linuxのコンソールでお仕事をしていると、シェルスクリプトで楽をしようとします。
-楽をするため、コマンドを調べていたところ、Coreutilsのマニュアルにたどり着きました。
+楽をするため、筆者がよく使うコマンドを調べていたところ、Coreutilsのマニュアルにたどり着きました。
 気づけば、Coreutilsのマニュアルを読んで、コマンドの実行方法や、知らなかったコマンドや、いままで使ったことがないオプションを見つけていました。
 
-.. [#twitter-tboffice] https://twitter.com/tboffice
-.. [#dai7sec] https://sites.google.com/site/dai7sec/
 .. [#coreutils-url] http://www.gnu.org/software/coreutils/
 .. [#coreutils-manual] http://www.gnu.org/software/coreutils/manual/
 .. [#core-sed] coreutilsに含まれないコマンド(sedとか)がばんばん出てくるしどうしてこうなった
@@ -58,12 +60,12 @@ Linuxのコンソールでお仕事をしていると、シェルスクリプト
 
 ご注意
 ------
-Coreutilsのソースを読んで実装部分などの話はありません。コマンドの使い方を説明しています。
-また、バージョンにより、使えないコマンドやオプションがあります。
-なお、筆者が検証した環境は、さくらのVPS CentOS 5.7 と value-server [#vs]_ と amazon EC2 [#amazonec2]_ のマイクロインスタンスです。パッケージはほぼデフォルトのため、CentOS 5.7ではCoreutils 5.97、value-serverでは6系、amazon EC2では8.21です。
+基本的に、ソースを読んで実装部分などの話はありません。コマンド・オプションの使い方を説明しています。
+バージョンにより、使えないコマンドやオプションがあります。本書はバージョン8.24のマニュアルを元にコマンドの解説を行っています。
+また、筆者が検証した環境は、DigitalOcean(CentOS 6.6) [#dovup]_ と amazon EC2 [#amazonec2]_ のマイクロインスタンスです。パッケージはほぼデフォルトのため、CentOS 6.6ではCoreutils 8.4、amazon EC2では8.21です。
 本文中ででてくるコマンドのサンプルは、上記の環境で実行していますが、使うときは誰にも迷惑をかけないところで実験・検証してください。
 
-.. [#vs] 安価な共用サーバを使っていました。どういうハードウエア使ってるのかなーと思って申し込んでちょっと使っていました。もう解約してしまったので、Coreutilsの細かいバージョン忘れてしまいました
+.. [#dovup] CentOS 6.5のイメージがあり、yum updateすると 6.6になった
 .. [#amazonec2] /etc/issue 曰く、 Amazon Linux AMI release 2014.03
 
 この本では、Coreutilsのマニュアルの冗長な部分はできるだけ端折って、面白そうなところや、実践的な部分を取り上げました。
@@ -79,11 +81,11 @@ Coreutilsのソースを読んで実装部分などの話はありません。�
 そもそもCoreutilsとは
 ---------------------
 「コアユーティルズ」と読みます。文字に落としてみるとダサいですね。
-まあ、そのへんは置いといて、Coreutilsとは、 ``ls`` や ``cat`` など、linuxでは欠かせないコマンドをまとめたパッケージです [#coreutils-umu]_ 。
-Coreutilsが登場する前は、Fileutils, Shellutils, Textutilsというutilsがありました。
-それらを統合したものです。ChangeLogをみたところ、一番古い日付は2002-07-01でした。
+まあ、そのへんは置いといて、 ``ls`` や ``cat`` など、linuxでは欠かせないコマンドをまとめたパッケージです [#coreutils-umu]_ 。
+Fileutils, Shellutils, Textutilsというutilsを統合したものです。
+ChangeLogをみたところ、一番古い日付は2002-07-01でした。
 おそらくそのころに統合されたのでしょう。メジャーバージョンは2003年4月にバージョン5として登場しました。
-2014年12月現在、8.23 (2014-07-18) がリリースされています [#hinpan]_ 。
+2015年7月現在、8.24 (2015-07-03) がリリースされています [#hinpan]_ 。
 
 .. [#coreutils-umu] この本をお手にとっている人に、Coreutilsの説明をしてもあまり意味がないような気もしますが、まあ、一応
 .. [#hinpan] 現在でも数日おきにバグフィックスなどが入っています
@@ -95,14 +97,32 @@ MacにGNU Coreutilsをインストールしたいときは、homebrewでイン�
 
    brew install coreutils
 
-
 なお、既存のコマンドと名前がかぶるので、プレフィクスにgがついています。 ``ls`` だったら ``gls`` となっています。 ``od`` だった場合は・・・もうあとは分かるな・・・？
-
 
 
 本稿の構成
 ----------
 最初にCoreutilsパッケージのコマンドに共通のオプションを解説し、Coreutilsのマニュアルの通りにコマンドをならべて解説しています。一部、冗長なところがあるのでまとめたりしています。問題ないでしょう。
+
+
+そんなことより
+-------------
+
+ソースどこだよ：
+  githubにあります　https://github.com/coreutils/coreutils/
+
+zipでくれ：
+  http://ftp.gnu.org/gnu/coreutils/ か https://github.com/coreutils/coreutils/releases
+
+頻繁に寄せられる質問は：
+  FAQです http://www.gnu.org/software/coreutils/faq/coreutils-faq.html
+
+マニュアルは：
+  http://www.gnu.org/software/coreutils/manual/
+
+メーリングリストは：
+  http://lists.gnu.org/archive/html/coreutils/
+
 
 .. raw:: latex
 
