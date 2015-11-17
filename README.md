@@ -12,7 +12,7 @@
 
 同人誌として本になりました。購入していただけると、筆者のご飯になります。COMIC ZINさんで取り扱っています。
 
-[COMIC ZINさん販売ページ](http://shop.comiczin.jp/products/detail.php?product_id=20297) 5/5くらいから見られるはずです
+[COMIC ZINさん販売ページ](http://shop.comiczin.jp/products/detail.php?product_id=25728) 第4版が出ました。
 
 # ビルド手順
 1. Sphinxのセットアップ
