@@ -226,6 +226,8 @@ latex_elements = {
 \fi
 \fi}
 
+\def\thempfootnote{\arabic{mpfootnote}}
+
 """,
 'classoptions': ',twoside,openany',
 'babel': '\usepackage[english]{babel}',
