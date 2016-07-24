@@ -15,8 +15,8 @@ Coreutilsのマニュアルは、絶賛製作中です！初心者向けに基�
 =================
 例えば、 ``ls -l`` の ``-l`` がオプションです。ちなみに、 ``sort -r password -t :`` と実行すると、 ``sort -r -t : password`` として実行したように動作します。コマンドによっては、ものすごい長いオプション名がありますが、省略することができます。 ``rmdir --ignore-fail-on-non-empty`` の場合であれば、 ``rmdir --ignore-fail`` とか ``rmdir --i`` で実行できます。``ls --h`` のときは、複数のオプションにマッチするので「分からへん」 [#wakarahen]_ と言われたり、「どれやねん」　[#doreyanen]_ と言われたりします。
 
-.. [#wakarahen] (coreutils 8.4) `ls: option '--h' is ambiguous`
-.. [#doreyanen] (coreutils 8.25) `ls: option '--h' is ambiguous; possibilities: '--human-readable' '--help' '--hide' '--hide-control-chars'`
+.. [#wakarahen] (coreutils 8.4) ls: option '--h' is ambiguous
+.. [#doreyanen] (coreutils 8.25) ls: option '--h' is ambiguous; possibilities: '--human-readable' '--help' '--hide' '--hide-control-chars'
 
 以下、Coreutilsでの共通のオプションです。
 
@@ -133,7 +133,7 @@ infoコマンドを打った後は、Emacsのキーバインドなのでそこ�
       . : break continue eval exec exit export readonly return set shift
       times trap unset
 
-他には、浮動小数や、シグナル一覧や、ディレクトリの指定の方法や、``/`` 取り扱い方、symlinkのたどり方などがあります。
+他には、浮動小数や、シグナル一覧や、ディレクトリの指定の方法や、``/`` の取り扱い方、symlinkのたどり方などがあります。
 
 
 
@@ -3310,7 +3310,7 @@ Rust実装
 -------------
 一年経ちました。在庫がなくなりました。前回Finalつってんのに第5版ですよ。何なんですか（逆ギレ
 
-今回は編集・ビルド・入稿まで2日でやるとか頭おかしい感じでした。一年ぶりくらいにビルドしようとすると、環境がなくなっていたりしてよろしくないですね。今回はそれを見越してsphinx+latexをビルドするためのdockerイメージを作っていました [#dockerimage]_ 。今回は、 sphinx1.3.6 + TeXLive2015でビルドしました。dockerイメージのサイズがでかいので、改良しようとしている間にTeXLive! サンシャイン!!じゃなかったTexLive 2016が出てしまいアチャーという顔をしております。
+今回は編集・ビルド・入稿まで2日でやるとか頭おかしい感じでした。一年ぶりくらいにビルドしようとすると、環境がなくなっていたりしてよろしくないですね。今回はそれを見越してsphinx+latexをビルドするためのdockerイメージを作っていました [#dockerimage]_ 。sphinx1.3.6 + TeXLive2015でビルドしました。dockerイメージのサイズがでかいので、改良しようとしている間にTeXLive! サンシャイン!!じゃなかったTexLive 2016が出てしまいアチャーという顔をしております。
 
 さて前回との比較(実質的には、Coreutils 8.24と8.25)をすると、 ``base32`` コマンドが追加されました。マニュアルベースの変更では、 ``sort -R`` に ``shuf`` コマンドの説明が追加されたり、 ``groups`` , ``users`` コマンドに似たコマンドとして ``getent`` , ``who`` コマンドの記述が追加されたりしたくらいです。細かいオプションの変更やらなんやらありますけど、些細すぎるので割愛です。
 
