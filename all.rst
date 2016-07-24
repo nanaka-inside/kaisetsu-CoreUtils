@@ -332,7 +332,7 @@ RFC 4648 [#rfc4648]_ に則ってデータを変換するコマンドで、133%�
 
 base32
 ------
-Coreutils 8.25から登場した ``base32`` です。RFC 4648 のBase32を実装したものです [#base32]_ 。デコードも出来ます [#base32_]_ 。
+Coreutils 8.25から登場した ``base32`` です。RFC 4648 のBase32を実装したものです [#base32]_ 。デコードも出来ます [#base32decode]_ 。
 
 .. code-block:: sh
 
@@ -340,7 +340,7 @@ Coreutils 8.25から登場した ``base32`` です。RFC 4648 のBase32を実装
    CentOS Linux release 7.2.1511 (Core)
 
 .. [#base32] 経緯：https://bugzilla.redhat.com/show_bug.cgi?id=1250113
-.. [#base32_] あたりまえだ
+.. [#base32decode] あたりまえだ
 
 てーさい
 ==============
@@ -1496,6 +1496,7 @@ rm
 rmにはaliasが貼ってあることがありまして、 ``alias rm`` と打つと、 ``alias rm='rm -i'`` と出てくることがあります。 ``-i`` はこのファイル本当に消す？と聞いてくるオプションです。
 このエイリアスの呪縛から逃れるには、 ``\rm`` とバックスラッシュを付けます。さっきのaliasのとき、 ``rm -rf file`` とやると、 ``rm -i -rf file`` となります。オプションの順序の関係で、あとに置かれたオプションで上書きされるので、 ``-i`` オプションは上書きされます。ということで、本当に消す？って聞いてこなくなります。
 
+.. index:: shred
 
 shred
 ------
