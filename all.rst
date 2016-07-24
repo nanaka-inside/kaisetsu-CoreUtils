@@ -13,7 +13,12 @@ Coreutilsのマニュアルは、絶賛製作中です！初心者向けに基�
 
 共通のオプション
 =================
-Coreutilsでの共通のオプションです。
+例えば、 `ls -l` の `-l` がオプションです。ちなみに、 `sort -r password -t :` と実行すると、 `sort -r -t : password` として実行したように動作します。コマンドによっては、ものすごい長いオプション名がありますが、省略することができます。 `rmdir --ignore-fail-on-non-empty` の場合であれば、 `rmdir --ignore-fail` とか `rmdir --i` で実行できます。`ls --h` のときは、複数のオプションにマッチするので「分からへん」 [#wakarahen]_ と言われたり、「どれやねん」　[#doreyanen]_ と言われたりします。
+
+.. [#wakarahen] (coreutils 8.4) `ls: option '--h' is ambiguous`
+.. [#doreyanen] (coreutils 8.25) `ls: option '--h' is ambiguous; possibilities: '--human-readable' '--help' '--hide' '--hide-control-chars'`
+
+以下、Coreutilsでの共通のオプションです。
 
 .. index:: help
 
@@ -61,11 +66,12 @@ infoコマンドを打った後は、Emacsのキーバインドなのでそこ�
 -lというファイルあるいはディレクトリをls -lで表示します。
 
 .. code-block:: sh
-   
+
    $ mkdir -- -l
 
 
 とやると、 ``-l`` というディレクトリが出来ます [#haifundir]_ 。touchでも同様。
+
 
 .. [#haifundir] そんな名前のディレクトリとかファイル作るなよ！あとで面倒だぞ！！改行コードだけのファイル名も作れるぞ！作るなよ！！（フラグ
 
@@ -83,7 +89,7 @@ infoコマンドを打った後は、Emacsのキーバインドなのでそこ�
 
 .. code-block:: sh
 
-   $ sort - 
+   $ sort -
    b # 打つべし
    a # 打つべし
    c # 打つべし
@@ -100,10 +106,10 @@ infoコマンドを打った後は、Emacsのキーバインドなのでそこ�
    コマンドを実行したときに数値が返ります。コマンドを実行したあとにすぐ ``echo $?`` をやると出てくる数値です。0が通常にコマンドが終わったことを示し、1は異常があったことを示します。0,1以外の数値を返すコマンドもあります。chroot, env, expr, nice, nohup, numfmt, printenv, sort, stdbuf, test, timeout,tty です。
 
 バックアップオプション
-   cp, install, ln, mvにあります。ファイル操作するときに元のファイルをどのようにバックアップするか指定します。詳細は各コマンドを参照してください。
+   `-b` オプションです。cp, install, ln, mvにあります。ファイル操作するときに元のファイルをどのようにバックアップするか指定します。サフィックスをつけるなら `-S` オプションです。詳細は各コマンドを参照してください。
 
 ブロックサイズ
-   blocksのサイズを設定することができます。キロバイトやキビバイトとかあれです。df, du, lsあたりで使います。
+   blocksのサイズを設定することができます。キロバイト(kB)やキビバイト(K,k,KiB)とかのあれです。df, du, lsあたりで使います。
 
 ユーザ名とIDの曖昧さの除去
    ユーザ名が数字の場合どうなってしまうんでしょうか。そのあたりは、chownあたりのコマンドに詳細を書きました。
@@ -122,21 +128,20 @@ infoコマンドを打った後は、Emacsのキーバインドなのでそこ�
    ビルトインコマンドには、下記があります。
 
    ::
-   
-      . : break continue eval exec exit export readonly return set shift 
+
+      . : break continue eval exec exit export readonly return set shift
       times trap unset
 
 他には、浮動小数や、シグナル一覧や、ディレクトリの指定の方法や、`/` 取り扱いかた、symlinkのたどり方などがあります。
 
 
 
-ファイルまるまる出力系
-======================
+この素晴らしいファイルに出力を!
+==========================
 
-ファイルが高まる出力系 [#marumaru]_ のコマンドです。ファイルの意識を高めましょう [#file-takamaru]_ 。
+すごい高貴なファイルの気配がありますね。え？なさそう？　そう言われるとそんな気もする [#outputofen]_ 。
 
-.. [#marumaru] 原文では、Output of entire filesとなってます。高まるってなんだ？
-.. [#file-takamaru] どうやるんだろう
+.. [#outputofen] 原題は、Output of entire files。元ネタは
 
 .. index:: cat
 
@@ -158,7 +163,7 @@ fileというファイルの中身を出力するときにはこうします [#c
 次に、マニュアルにあるオプションの読み方を説明します。説明しますよ！！ [#important]_ マニュアルには
 
 
-:: 
+::
 
    cat [option] [file]...
 
@@ -186,13 +191,13 @@ fileというファイルの中身を出力するときにはこうします [#c
 -E
    行末がどこまで入ってるか分からないから表示して
 
--n 
+-n
    行数を付けて
 
 -T
    タブ文字も表示して欲しいなぁ
 
--v 
+-v
    改行文字も表示して欲しいなー
 
 -A
@@ -207,13 +212,13 @@ fileというファイルの中身を出力するときにはこうします [#c
 
 .. code-block:: sh
 
-   cat f - g 
+   cat f - g
 
 このようにコマンドが実行されたときは、fの内容を表示、標準入力の内容表示、ctrl-d(ctrlを押しながらdを押すこと/意味は、入力の終わり)を押したらgの内容が表示されます。
 ``cat`` 単独で打ったときは --- マニュアル通りの説明をすると、「ファイルまたは標準入力を標準出力にコピーする」 [#catm]_ です。
 引数が指定されていないときは標準入力になります。標準入力と標準出力を体感してください [#cat-ji]_ 。
 
-.. [#catm] cat copies each file (‘-’ means standard input), or standard input if none are given, to standard output. 
+.. [#catm] cat copies each file (‘-’ means standard input), or standard input if none are given, to standard output.
 .. [#cat-ji] 実際に打ってみよう!! ctrl + c で抜けられるよ!!
 
 ちょっとしたテキストファイルを作るときは
@@ -247,7 +252,7 @@ tac
 
 .. code-block:: sh
 
-   $ echo -e "2 9 4\n7 5 3\n6 1 8" | tac | rev 
+   $ echo -e "2 9 4\n7 5 3\n6 1 8" | tac | rev
 
 
 単語単位で逆にするには、
@@ -287,7 +292,7 @@ nl
 
   $ echo -e "hoge\n\nfuga\npiyo" | nl -b a -n rz -s " hoge: " -v 3 -w 3
     003 hoge: hoge
-    004 hoge: 
+    004 hoge:
     005 hoge: fuga
     006 hoge: piyo
 
@@ -307,7 +312,6 @@ od
   0000040 020154 071134 067440 020156 067141 056040 005155 000012
   0000057
 
-
 .. index:: base64
 
 base64
@@ -323,10 +327,21 @@ RFC 4648 [#rfc4648]_ に則ってデータを変換するコマンドで、133%�
 
 .. [#rfc4648] http://tools.ietf.org/html/rfc4648
 
+.. index:: base32
+
+base32
+------
+Coreutils 8.25から登場した`base32`です。RFC 4648 のBase32を実装したものです [#base32]_ 。
+
+.. [#base32] 経緯：https://bugzilla.redhat.com/show_bug.cgi?id=1250113
 
 
-体裁を整える系
+てーさい
 ==============
+
+体裁を整えるコマンドたちです。原題は、Formatting file contentsです [#teisai]_ 。
+
+.. [#teisai] 「てーさい」の元ネタは、てーきゅう(第7期)です
 
 .. index:: fmt
 
@@ -349,16 +364,16 @@ RFCみたいな文章がすぐに出来る！プレーンテキストすばら�
 .. code-block:: sh
 
    cat /etc/issue | pr | pr | head -n 12
-   
-   
+
+
    2015-08-01 10:07                                                1 ページ
-   
-   
-   
-   
+
+
+
+
    2015-08-01 10:07                                                1 ページ
-   
-   
+
+
    CentOS release 6.6 (Final)
    Kernel \r on an \m
 
@@ -391,7 +406,7 @@ tail
 ``-f`` オプションをつけることによって、引数にとったファイルに対して追加された文字が出てきます。ちなみに複数のファイルを食わせることができるので、アクセスログファイルとアクセスエラーログファイルの両方を ``tail -f`` で表示することも可能。パイプでつないで特定の文字列だけ出力することも可能。
 
 .. code-block:: sh
-   
+
    tail -f access.log error.log | grep --color -E "(==|192.168)"
 
 
@@ -434,8 +449,8 @@ split
 .. code-block:: sh
 
    $ split hogefile
-   $ ls 
-   hogefile xaa  xab  xac  xad  xae  xaf  xag  xah  xai 
+   $ ls
+   hogefile xaa  xab  xac  xad  xae  xaf  xag  xah  xai
 
 1000行ごとに1ファイルを、カレントディレクトリに生成します [#splita]_ 。xaa xab ... となっているのは、あとでcatすると元に戻る [#splitb]_ からです。100行ごとに分割してほしいとか、xxというファイル名いやだというときはこんな感じです。
 
@@ -444,15 +459,15 @@ split
 
 
 .. code-block:: sh
-   
+
    $ split -l 100 hogefile AA
-   $ ls 
+   $ ls
    hogefile AAaa  AAab  AAac  AAad  AAae  AAaf
 
 -bオプションで任意のバイト数でsplitすることができます。分割しながら圧縮できる(filterに通す)というオプションもあります [#splitc]_ [#splitd]_ [#splite]_ [#splitf]_ [#splitg]_ 。
 
 .. [#splitc] xz -dc BIG.xz | split -b200G --filter='xz > $FILE.xz' - big- (マニュアルより。big-aa.xz, big-ab.xzといったようにファイルが出来上がります)
-.. [#splitd] ディスクの単価が安い現代に需要があるかどうか... 
+.. [#splitd] ディスクの単価が安い現代に需要があるかどうか...
 .. [#splite] あるって!開発環境とかいつもディスク枯渇してるじゃん!!
 .. [#splitf] 開発環境でsplitする用途があるか疑問だにゃあ
 .. [#splitg] 脚注で会話するなよ
@@ -462,7 +477,7 @@ split
 .. [#splitn] [練習問題] 何をしているのか、マニュアルを読んで確認してみましょう
 
 .. code-block:: sh
-   
+
    $ seq 100 > k; split -nl/7/33 k
    20
    21
@@ -485,19 +500,19 @@ csplit
 
 .. [#csplist-x] 長い文章をすぱっと二つに分割する時に便利。日本語文字列でもsplitできる。hoge文字列からのoffsetが使えるのがさらに便利
 
-.. code-block:: sh 
+.. code-block:: sh
 
    $ csplit hogedfile /hoge/
 
 さてマニュアルを追ってみましょう。「ファイルがたくさんできるから、最初にディレクトリを作り、その中にcdしましょう」と書いてあります。やっておきましょう。
 
-.. code-block:: sh 
+.. code-block:: sh
 
    $ mkdir d && cd d
 
 次に0または5で終わる文字にマッチしたら、そこでまた別のファイルを作ってそこに出力します。 ``{*}`` があるので、マッチしたぶんだけファイルが生成されます。出力されている数字は、それぞれのファイルのバイト数です。
 
-.. code-block:: sh 
+.. code-block:: sh
 
    $ seq 14 | csplit - '/[05]$/' '{*}'
    8
@@ -556,7 +571,7 @@ cksum
 ファイル名を引数に取ると、CRC [#cksum]_ のチェックサムを表示します。
 
 .. code-block:: sh
-   
+
    $ cksum /etc/issue
    2950197414 47 /etc/issue
 
@@ -590,7 +605,7 @@ sha系
 -------
 shaと、sha2で始まるコマンドをまとめました。原文では、 ``sha1sum`` と ``sha2`` に分かれています。
 
-sha1sum 
+sha1sum
    SHA-1のダイジェストを計算します。md5sumより安全なダイジェストです。SHA-2にとってかわられて徐々に廃止すべき、とマニュアルに書かれています
 
 sha2系コマンド
@@ -603,9 +618,11 @@ sha2系コマンド
    49e10814e2665c2a4040344e927ce4b231152b30c55fb53d8dbb7108  /etc/issue
 
 
-仕分系
-============================
-ファイルの中身をソート(仕分)するコマンド群です。
+仕分ですが？
+============
+ファイルの中身をソート(仕分)するコマンド群です [#shiwake]_ 。
+
+.. [#shiwake] 元ネタは、坂本ですが？
 
 .. index:: sort
 
@@ -630,7 +647,7 @@ sort
 
    $ seq 0 2 10 > a
    $ seq 1 2 10 > b
-   $ head a b 
+   $ head a b
    ==> a <==
    0
    2
@@ -689,21 +706,24 @@ sort
 -u
    重複を弾いてくれます
 
--r 
+-r
    逆順に表示してくれます
 
--k pos1[,pos2] 
+-k pos1[,pos2]
    特定のカラムにある文字列を対象にソートします。 ``ps aux`` の2カラム目を降順でソートした結果:
 
 .. code-block:: sh
-   
+
    $ ps aux | sort -nk +2 | tail
 
--M 
+-t
+   セパレータを設定します
+
+-M
    Month sortです。月の名前でソートしてくれます
 
 -R
-   Random Sortです。 ``shuf`` ればいいと思います [#sort-R]_ 
+   Random Sortです。 ``shuf`` ればいいと思います [#sort-R]_
 
 .. [#sort-R] ``shuf`` のところで出てくる ``--random-source`` が使えます
 
@@ -722,7 +742,7 @@ shuf
 
 .. code-block:: sh
 
-   $ shuf -i 1-4                                                                      
+   $ shuf -i 1-4
    3
    1
    2
@@ -731,12 +751,25 @@ shuf
 同じファイルを共有していれば、同じ結果が返ってきます。つまり、さっき作った k というファイルを使って、あなたと同じランダムな結果を実現してみましょう [#shuf-ran]_ [#shuf-sort]_ [#shuf-yodan]_ 。
 
 .. code-block:: sh
-   
+
    $ shuf --random-source=k -e hoge fuga piyo choi
    fuga
    hoge
    piyo
    choi
+
+0-9までの数字を50回出すならこれ
+
+.. code-block:: sh
+
+   $ shuf -r -n 50 -i 0-9
+
+コインを50回振ってみるならこれ
+
+.. code-block:: sh
+
+   $ shuf -r -n 100 -e Head Tail
+
 
 .. [#shuf-1] CentOS5.7な環境でコマンド打ったら出てこない!それもそのはず、CentOSのcoreutilsのバージョンが古いのでした(5.97)。バージョン6.4から新しく加入したコマンドです。
 .. [#shuf-2] 当然、この通りに出てくるわけではありません。--random-source=FILE というオプションもあるのでこだわりたい方はこだわれます
@@ -763,7 +796,7 @@ uniq
 ----
 ソート済みのファイルを引数に取ると、重複行を取り除いたデータを書き出してくれます [#uniq-1]_ 。
 ``sort`` にも ``-u`` オプションがあり、 ``uniq`` コマンドを単体で打ったときと同じようなことをやってくれます。
-よく使うパティーン [#uniq-2]_ 
+よく使うパティーン [#uniq-2]_
 
 
 .. code-block:: sh
@@ -784,7 +817,7 @@ comm
 
    $ seq 1 3 9 > q
    $ seq 1 2 9 > w
-   $ head q w                                                                         
+   $ head q w
    ==> q <==
    1
    4
@@ -876,7 +909,7 @@ cut
 
    $ cal | cut -c1-2
    Su
-     
+
     4
    11
    18
@@ -887,8 +920,8 @@ csvデータから特定のカラムだけ切り出せます。tsortで出てき
 .. [#cut-awk] [練習問題] awkでも同じコマンドを作ってみましょう
 
 .. code-block:: sh
-   
-   $ cut -f2 -d" " text                                                                
+
+   $ cut -f2 -d" " text
    fuga
    piyo
    bar
@@ -904,7 +937,7 @@ paste
 ファイルの1行1行を横にひっつけていきます。具体例はマニュアルに書いてあるので読んで下さい。え？読むのがめんどくさい？しょうがないにゃあ。
 
 .. code-block:: sh
-   
+
    $ cat num2
    1
    2
@@ -934,11 +967,11 @@ join
 
 .. code-block:: sh
 
-   $ cat c 
+   $ cat c
    00:00 100
    00:01 200
    00:02 300
-   $ cat d 
+   $ cat d
    00:00 150
    00:01 250
    00:02 250
@@ -953,13 +986,13 @@ join
 
 .. code-block:: sh
 
-   $ for h in `seq -w 0 23` 
+   $ for h in `seq -w 0 23`
    > do for m in `seq -w 0 59`
-   > do echo $h:$m $(cat hoge-access.log | grep -c $h:$m) ; done ; done | \ 
+   > do echo $h:$m $(cat hoge-access.log | grep -c $h:$m) ; done ; done | \
    > tee -a hoge-access.min.log
    $ # などというファイルを三つくらい用意
    $ join hoge-access.min.log fuga-access.min.log | \
-   > join - piyo-access.min.log | \ 
+   > join - piyo-access.min.log | \
    > sed -e 's/ /,/g' > foo.csv
 
 
@@ -976,7 +1009,7 @@ tr
 123という文字列を、3を4に、2を1に、1を6に変換します。 ``321`` という文字列を ``456`` という文字列に変換するわけではありません。
 
 .. code-block:: sh
-   
+
    $ echo 123 | tr 321 456
    654
 
@@ -993,7 +1026,7 @@ tr
 trのtipsを調べると大体でてくるのは改行の削除なんですが。
 
 .. code-block:: sh
-   
+
    $ tr -d '\r' < dosfile.txt > unixfile.txt
 
 
@@ -1045,7 +1078,7 @@ ls
   ``~`` で終わるバックアップファイルを表示しません
 
 -d
-  ディレクトリのみを表示します [#ls-d]_ 
+  ディレクトリのみを表示します [#ls-d]_
 
 .. [#ls-d] lsしてたくさん普通のファイルがある中でディレクトリだけを表示したいときに使う
 
@@ -1068,7 +1101,7 @@ ls
   ファイルのownerを表示し、groupは表示しません。GNUでないバージョンのlsの互換性のためのオプション
 
 -i
-   inode番号を表示します [#inode]_ 
+   inode番号を表示します [#inode]_
 
 .. [#inode] inodeってなに？ググりましょう
 
@@ -1079,30 +1112,30 @@ ls
    ファイルのパーミッションやハードリンクの数、owner group、ファイルサイズ、タイムスタンプを表示します
 
 .. tip:: ハードリンクの数
-   
+
    ``-l`` を付けたときこんな感じで表示されます。kというファイルを作っておきます。
-   
+
    .. code-block:: sh
 
-      $ ls -l k                                                             
+      $ ls -l k
       2875312 -rw-r--r-- 1 nanaka nanaka 27 Nov 29 03:19 k
 
    このとき、nanakaの前の1ってのはなによ、という問題。こうすると分かります
 
    .. code-block:: sh
-      
+
       $ ln k l # ハードリンクを張ります。同じinodeを指すファイルを作ります
       $ ls -l -i k l
       2875312 -rw-r--r-- 2 nanaka nanaka 27 Nov 29 03:19 k
       2875312 -rw-r--r-- 2 nanaka nanaka 27 Nov 29 03:19 l
-      
+
       $ rm k # kファイルを消すと...?
-      $ ls -l -i l                                                                 
+      $ ls -l -i l
       2875312 -rw-r--r-- 1 nanaka nanaka 27 Nov 29 03:19 l # 1 になった！
 
 
--n 
-   ファイルのグループ、オーナーを数字で表示します [#ls-n]_ 
+-n
+   ファイルのグループ、オーナーを数字で表示します [#ls-n]_
 
 .. [#ls-n] see /etc/passwd
 
@@ -1110,7 +1143,7 @@ ls
    -Gとおなじ
 
 -s
-   ファイルに対するディスクの割当量を表示します [#ls-s]_ 
+   ファイルに対するディスクの割当量を表示します [#ls-s]_
 
 .. [#ls-s] 手元の環境だと、小さなファイルに関しては4 kbytes が割り当てられていました
 
@@ -1118,7 +1151,7 @@ ls
 ソート順を指定
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
--c 
+-c
    ファイルが作られた(ctime)順でファイルを表示します
 
 -f
@@ -1128,9 +1161,9 @@ ls
    逆順にソート
 
 -S
-   ファイルの大きさ順にソートします。デフォルトは大きい順に並びます。小さい順に並べるなら、 ``-rS`` 
+   ファイルの大きさ順にソートします。デフォルトは大きい順に並びます。小さい順に並べるなら、 ``-rS``
 
--t 
+-t
    ファイルの更新時間(mtime)順にソートします
 
 -u
@@ -1206,17 +1239,17 @@ ls
 ファイル名の表示形式
 ^^^^^^^^^^^^^^^^^^^^
 
--b 
+-b
    例を見てみましょう
 
    .. code-block:: sh
-      
+
       $ touch Ctrl-v Enter # ctrl を押しながら
       $ # v を押しキーボードから手を離す
       $ # 一呼吸おいてEnterを押す。さらにもう一度Enter
       $ ls
       ?
-      $ ls -b 
+      $ ls -b
       \r
 
    ファイルの消し方は自分で考えてね！
@@ -1258,7 +1291,7 @@ lsのカラー設定 [#dirc]_ 。呪文なので唱えて下さい。実行方�
 .. [#dirc] ぶっちゃけた話、実機のコンソールに入ることは滅多にないのでsshクライアントで色を設定すればよくね？とは思っている。え？Mac?自分で何とかして下さい...
 
 .. code-block:: sh
-   
+
    $ eval "$(dircolors [option]... [file])"
 
 -pオプションで設定を見ることが出来ます。
@@ -1342,9 +1375,9 @@ cp
    yumのextra経由でインストールするか、公式サイトからRPMを落としてきてインストールします。pvの実行例です：
 
    .. code-block:: sh
-      
+
       $ pv coreutils-8.22.tar.xz > hoge
-      5.09MiB 0:00:00 [ 657MiB/s] [================================>] 100% 
+      5.09MiB 0:00:00 [ 657MiB/s] [================================>] 100%
 
 
 .. index:: dd
@@ -1354,19 +1387,21 @@ dd
 ファイルのコピーとか変換とか行います [#ddd]_ 。ファイルと言っていますが、デバイスにも対応しています。よくあるディスクのコピーはこんな感じ
 
 .. code-block:: console
-   
+
    # dd if=/dev/sda1 /dev/sdb1
 
 
 「変換」はどこいったんじゃ！というツッコミもあるかと思いまして、例を挙げます。textというファイルを入力に使います。
 
 .. code-block:: sh
-   
+
    $ dd conv=ucase if=text of=test2
 
-これでtextファイルの中身のアルファベットが大文字になります！やったね！！ [#dd]_ 
+これでtextファイルの中身のアルファベットが大文字になります！やったね！！ [#dd]_
 
-あと、これまでddがいつ終わるかわからない！という声に応えてstatus=progressというオプションが8.24から入りました。あとは察して。
+あと、これまでddがいつ終わるかわからない！という声に応えて `status=progress` というオプションが8.24から入りました。
+コマンド終了時の出力で、でかい数字のバイト表記で単位がよくわからん！という声に応えて、適切なSI単位が8.25から入るようになりました。 `3441325000 bytes (3.4 GB, 3.2 GiB) copied` こんな感じです。
+
 
 .. [#dd] ucase以外にも、ebcdicやibmといったオプションもあります
 .. [#ddd] なぜddという名前なのかは、'Dataset Definition'の略だとか、'Convert and copy a file'の略でccにしたかったけどすでにそのコマンドがあったのでddにしたとか。真相は自分で確かめよう！
@@ -1383,11 +1418,12 @@ install
 
    # install -o user -g group file /tmp/
 
-ディレクトリも作ってくれます。
+ディレクトリも作ってくれます。`mkdir -p` ぽいこともやってくれます
 
 .. code-block:: console
 
-   # install -o user -g group -d /usr/local/mysql
+   # install -o root -g root -m 755 -d /hoge/fuga/piyo/choi
+
 
 .. index:: mv
 
@@ -1404,10 +1440,10 @@ rm
 .. [#rm-k] 黒歴史をバージョン管理していたら別
 
 前回 ``ls`` コマンドの説明の時に作った、改行コードがファイル名になっているファイルを消してみましょう。
- 
+
 .. code-block:: sh
-   
-   $ ls -b 
+
+   $ ls -b
    \r
    $ rm Ctrl-v Enter # ctrl を押しながら v を押しキーボードから手を離す
    $ # 一呼吸おいてEnterを押す。さらにもう一度Enter
@@ -1447,7 +1483,7 @@ rm
    結論をいうと、バックアップ取れ！これに尽きます。
 
 .. topic:: ext3grep
-   
+
    ext3grepというツールがあります。ext3ファイルシステムから文字列をgrepしてくれます。公式ドキュメントいわく、「unmount the partition ASAP ; do not mount it again.」だそうです。ん？バイナリファイル復活させたい？がんばれ！
 
 
@@ -1467,7 +1503,7 @@ shred
 使い方はこんな感じです。ファイルを削除したい場合は、 -u オプションを付けてください [#shred-u]_ 。
 
 .. code-block:: sh
-   
+
    $ shred -u secretFile
 
 デフォルトでは3回上書き処理を行います。変更したい場合は ``-n <回数>`` を指定してください。
@@ -1538,7 +1574,7 @@ mkfifo
 具体例を示します。
 
 .. code-block:: sh
-   
+
    $ mkfifo pipe
    $ ls -l > pipe & ; cat < pipe
 
@@ -1563,11 +1599,11 @@ NAME,TYPE,MAJOR,MINOR,MINORに当たる部分は、カーネルソースのド�
 下記、一番はじめの b がブロックスペシャルファイル、 c がキャラクタースペシャルファイルです。それぞれハードディスク、zeroです。
 
 .. code-block:: sh
-   
+
    $ ls -l /dev/hda
    brw-rw---- 1 root disk 3, 0  May 22  2012 /dev/hda
    $ ls -l /dev/zero
-   crw-rw-rw- 1 root root 1, 5  May 22  2012 /dev/zero 
+   crw-rw-rw- 1 root root 1, 5  May 22  2012 /dev/zero
 
 ``MAKEDEV`` というコマンドでもデバイスファイルを作ることが出来ます。
 
@@ -1607,7 +1643,7 @@ chown
 -----
 ファイルのオーナーとグループを変更します。 ``--reference=filename`` でfilenameとそっくりのオーナーとグループになります。シンボリックリンクを追うかどうかのオプションもあり。ファイルのオーナーを変えるので基本的にroot(あるいはsudo)で操作。ちなみに、ownerとgroupのセパレータは ``:`` が一般ですが、筆者は ``.`` 派。
 
-:: 
+::
 
    # chown root:root rootfile # セパレータは、: でも . でも
    # chown user.user userfile # 動作します
@@ -1619,12 +1655,12 @@ chgrp
 ファイルのグループを変更。こちらにも  ``--reference`` オプションがあります。
 
 .. tip:: uidやgidで指定する方法
-   
+
    ご存知のように、 ``chown`` や ``chgrp`` は、変更するユーザ名やグループ名を引数に与えると指定したユーザ名やグループ名を変更することが出来ます。
    uidとかgidで指定できたら、うれしくない？え？できちゃうの？出来ちゃうんですねこれが。uidやgidの数字の前に ``+`` を入れれば良いのです [#chgrp]_ 。
 
    .. code-block:: console
-   
+
       # chown +1000.+1000 hoge-file
       # chgrp +$numeric_group_id fuga-file
       # chown +0:+0 /tmp/root-file
@@ -1640,14 +1676,14 @@ chmod
 .. code-block:: sh
 
    # touch hoge
-   # chmod 777 hoge 
-   # ls -l hoge 
+   # chmod 777 hoge
+   # ls -l hoge
    -rwxrwxrwx 1 root root 0  7月 27 01:56 2014 hoge
-   
-   # ls -l file 
+
+   # ls -l file
    -rw-r--r-- 1 root root 0  7月 27 01:53 2014 file
-   # chmod o-r file 
-   # ls -l file 
+   # chmod o-r file
+   # ls -l file
    -rw-r----- 1 root root 0  7月 27 01:53 2014 file
 
 
@@ -1655,7 +1691,7 @@ MODEの指定はこんな感じです。あとは流れで [#chmod]_
 
 .. [#chmod] おい
 
-:: 
+::
 
    Each MODE is of the form `[ugoa]*([-+=]([rwxXst]*|[ugo]))+'.
 
@@ -1670,11 +1706,13 @@ touch
 
 .. [#touchk] 違います
 .. [#touch] dateコマンドの日付フォーマットとも違っていて若干もにょる( ``-t`` オプション )。 ``--date=`` オプションで ``date`` コマンドの ``--date`` オプションと同じ指定ができます
- 
 
-ディスク容量
-============
-原文曰く、ディスクは無限のデータ容量を保持できない、だそうです。確かに無限の容量があったら必要ありませんね。duくらいは残して欲しいところ。将来、dfコマンドをたたく必要がなくなる日は来るのか。
+
+このディスク容量には問題がある!
+===========================
+原文曰く、ディスクは無限のデータ容量を保持できない、だそうです。確かに無限の容量があったら必要ありませんね。duくらいは残して欲しいところ。将来、dfコマンドをたたく必要がなくなる日は来るのか [#bijutsubu]_ 。
+
+.. [#bijutsubu] 元ネタは、この美術部には問題がある!
 
 .. index:: df
 
@@ -1689,21 +1727,21 @@ df
 
 .. code-block:: sh
 
-   # df 
+   # df
    Filesystem     1K-blocks    Used Available Use% Mounted on
    devtmpfs          241308     140    241168   1% /dev
    tmpfs             251108       0    251108   0% /dev/shm
    /dev/vda1       20511356 2025232  17437548  11% /
    # df --o
-   Filesystem     Type      Inodes IUsed   IFree IUse% 1K-blocks    Used 
-   devtmpfs       devtmpfs   60327   529   59798    1%    241308     140 
-   tmpfs          tmpfs      62777     1   62776    1%    251108       0 
-   /dev/vda1      ext4     1310720 65729 1244991    6%  20511356 2025232 
+   Filesystem     Type      Inodes IUsed   IFree IUse% 1K-blocks    Used
+   devtmpfs       devtmpfs   60327   529   59798    1%    241308     140
+   tmpfs          tmpfs      62777     1   62776    1%    251108       0
+   /dev/vda1      ext4     1310720 65729 1244991    6%  20511356 2025232
    # (続き)
       Avail Use% File Mounted on
      241168   1% -    /dev
      251108   0% -    /dev/shm
-   17437548  11% -    / 
+   17437548  11% -    /
 
 .. index:: du
 
@@ -1765,7 +1803,7 @@ echo
 与えられた文字を標準出力に書き出します。デフォルトだと、最後に改行が入るので、ハッシュ値を作るときには注意して下さい。改行が入らないようにするためには、 ``-n`` オプションを。 ``\n`` (new line) といった特殊文字を出力するためには下記のように。
 
 .. code-block:: sh
-   
+
    $ echo -e "a\nb\nc"
    a
    b
@@ -1779,7 +1817,7 @@ printf
 C言語のprintfに似たフォーマットで文字列を出力します。たとえばこんな感じ
 
 .. code-block:: sh
-   
+
    $ printf "%d" "'a"
    97
 
@@ -1792,7 +1830,7 @@ Ctrl-c(ctrlを押しながらcを押す。つまりkillが実行)されるまで
 最後はkillされる宿命なので、終了コードは必ず1になります。「イエッス、アスミス」はこのようにしてください。
 
 .. code-block:: sh
-   
+
    $ yes asumisu
 
 $hostというホストへのネットワークの速度を測りたい場合はこちらです [#yes-net]_ [#yes-seinou]_  。 ``cp`` のところででてきた ``pv`` [#pipeviwer]_  が再登場します。
@@ -1818,8 +1856,8 @@ false
 .. [#false] C言語と違うので混乱します
 
 .. code-block:: sh
-   
-   $ false ; echo $? 
+
+   $ false ; echo $?
    1
 
 .. index:: true
@@ -1890,19 +1928,19 @@ EXIT_STATUSは、ご覧のとおり。
 
 test
 ----
-コマンドの戻り値を判定して条件分岐します。コマンドとしては、 $ test ``expression`` や、ビルトインコマンドとして [ ``expression`` ] が利用できます。expressionについては、shellのマニュアルに書いてあります。指定されたファイルが存在するか、数値の大小比較などができます。 
+コマンドの戻り値を判定して条件分岐します。コマンドとしては、 $ test ``expression`` や、ビルトインコマンドとして [ ``expression`` ] が利用できます。expressionについては、shellのマニュアルに書いてあります。指定されたファイルが存在するか、数値の大小比較などができます。
 
 .. code-block:: sh
-   
+
    $ HOGE=str
    $ if [ "xstr" = x$HOGE ] ; then
    >   echo $HOGE
    >   else
    >   echo $HOGE is not str
-   > fi 
+   > fi
    str
 
-HOGEという変数がstrかどうかを比較するサンプルです。もし、xがなくて、$HOGEが空だと ``[ str = ]`` となってしまい、syntax errorになるので慣習としてxを付けています。 ``[]`` の返値が1か0で条件分岐します。つまり、 ``[ "xstr" = x$HOGE ]`` というコマンドが実行可能です [#testa]_ 。そんなわけで、 ``[`` というコマンドがあるんですよ...もちろんコマンドなので、 ``[`` のあとにスペース入れないといけませんよ...きこえますか...きこえますか...あっ、見られてますね... [#testb]_ 
+HOGEという変数がstrかどうかを比較するサンプルです。もし、xがなくて、$HOGEが空だと ``[ str = ]`` となってしまい、syntax errorになるので慣習としてxを付けています。 ``[]`` の返値が1か0で条件分岐します。つまり、 ``[ "xstr" = x$HOGE ]`` というコマンドが実行可能です [#testa]_ 。そんなわけで、 ``[`` というコマンドがあるんですよ...もちろんコマンドなので、 ``[`` のあとにスペース入れないといけませんよ...きこえますか...きこえますか...あっ、見られてますね... [#testb]_
 
 .. [#testa] 補足しておくと、 ``test "xstr" = x$HOGE`` というコマンドと等価です
 .. [#testb] とくにオチはない
@@ -1957,7 +1995,7 @@ file,file1,file2というファイルがあった場合は、
 
 [
 ----
-manはありませんが、コマンドして存在します。ソースもあります。貼り付けときますね [#lbracket]_ 。
+manはありませんが、コマンドとして存在します。ソースもあります。貼り付けときますね [#lbracket]_ 。
 
 .. [#lbracket] https://github.com/coreutils/coreutils/blob/master/src/lbracket.c
 
@@ -1993,7 +2031,7 @@ tee
 複数のファイルやプロセスに渡せるということなので、こんなコマンドも実行可能です。ファイルをダウンロードして標準出力に投げて、sha1sumとmd5sumでハッシュ値をとり、dvd.isoにダウンロードしたファイルを書き出し。
 
 .. code-block:: sh
-   
+
    wget -O - http://example.com/dvd.iso \
      | tee >(sha1sum > dvd.sha1) \
            >(md5sum > dvd.md5) \
@@ -2012,8 +2050,8 @@ basename
 ファイル名からディレクトリや拡張子を取り除きます。
 
 .. code-block:: sh
-   
-   $ basename /usr/local/bin/sh  
+
+   $ basename /usr/local/bin/sh
    sh
 
 スクリプトの中で、 ``basename $0`` と書くとそのスクリプト自身のファイル名が表示されます。ついでに、 ``basename $0 .sh`` と書くと、.shを除いたファイル名が表示されます。
@@ -2025,7 +2063,7 @@ dirname
 ファイル名やディレクトリパスを引数にとり、ファイル名の最後の一部を取り去ります。実際には、ファイルパスの最後のスラッシュを取り去る挙動をします。ファイルがあるかどうかのチェックはしていません。
 
 .. code-block:: sh
-   
+
    $ dirname /usr/local/bin/
    /usr/local/bin
    $ dirname /usr/local/bin/bash
@@ -2047,7 +2085,7 @@ pathchk
 * ファイル名長すぎ
 
 .. code-block:: sh
-   
+
    $ pathchk a<snip>a
    pathchk: a<snip>a: File name too long
 
@@ -2065,7 +2103,7 @@ mktemp
 実際に使うときは、こんな感じです。作られたファイル名を取得します。
 
 .. code-block:: sh
-   
+
    $ TMPFILE=$(mktemp hoge-XXXXXXX.txt) # この時点でファイルが作られます
    $ echo $TMPFILE
    hoge-82TiSmn.txt
@@ -2091,7 +2129,7 @@ realpath
 相対パスやシンボリックリンクを絶対パスに直します。Coreutils 8.15 (2012-01-06)より加入。
 
 .. code-block:: sh
-   
+
    $ realpath /tmp/../tmp/../tmp
    /tmp
    $ realpath hoge
@@ -2124,7 +2162,7 @@ pwd
   ``--physical`` と同じ。シンボリックリンクをたどる。つまりこんな感じ
 
 .. code-block:: sh
-   
+
    [user@hostname]# ln -s /usr/local/apache2/logs /var/log/httpd # symlink
    [user@hostname]$ cd /var/log/httpd
    [user@hostname /var/log/httpd$ pwd -L
@@ -2146,7 +2184,7 @@ stty
 原文を読んでみましょう。ライン設定が与えられていないとき、sttyはボーレートを表示します。え？マジで？
 
 .. code-block:: sh
-   
+
    $ stty
    speed 38400 baud; line = 0;
    -brkint -imaxbel
@@ -2169,8 +2207,8 @@ sttyは引数ではないたくさんのオプションがあります [#core-st
 
 
 .. code-block:: sh
-   
-   $ stty -a 
+
+   $ stty -a
    speed 38400 baud; rows 38; columns 79; line = 0;
    intr = ^C; quit = ^\; erase = ^?; kill = ^U; eof = ^D; eol = <undef>;
    eol2 = <undef>; swtch = <undef>; start = ^Q; stop = ^S; susp = ^Z;
@@ -2178,7 +2216,7 @@ sttyは引数ではないたくさんのオプションがあります [#core-st
    -parenb -parodd cs8 -hupcl -cstopb cread -clocal -crtscts -cdtrdsr
    -ignbrk -brkint -ignpar -parmrk -inpck -istrip -inlcr -igncr icrnl ixon
    -ixoff -iuclc -ixany -imaxbel -iutf8 opost -olcuc -ocrnl onlcr -onocr
-   -onlret -ofill -ofdel nl0 cr0 tab0 bs0 vt0 ff0 isig icanon iexten 
+   -onlret -ofill -ofdel nl0 cr0 tab0 bs0 vt0 ff0 isig icanon iexten
    echo echoe echok -echonl -noflsh -xcase -tostop -echoprt
    echoctl echoke
 
@@ -2203,14 +2241,14 @@ tty
 スタンダートインプット上のターミナルのファイル名を表示します。打ってみましょう。
 
 .. code-block:: sh
-   
+
    $ tty
    /dev/pts/0
 
 上記の結果は、さくらのVPSサーバにログインして ``tty`` コマンドを打った結果です。さらに別の端末から同じサーバに入り、同じコマンドを打ってみましょう。
 
 .. code-block:: sh
-   
+
    $ tty
    /dev/pts/12
 
@@ -2230,14 +2268,14 @@ id
 .. [#core-id-a] value-server(レンタル共用サーバ)での結果。16人目のユーザなのかもねー。ちなみに、本当に「hoge」というユーザでユーザ名を作りました
 
 .. code-block:: sh
-   
-   $ id 
+
+   $ id
    uid=10016(hoge) gid=20000(hpusers) groups=20000(hpusers)
 
 筆者がこのコマンドを使うときは、あのユーザwheelに入ってたっけ？と確認するときに使います。たとえばこのような感じ
 
 .. code-block:: sh
-   
+
    $ id ellen_jeager
    # 結果省略
 
@@ -2290,13 +2328,14 @@ groups
 所属しているグループ名を表示します。打ってみましょう。引数にはユーザ名を入れます。
 
 .. code-block:: sh
-   
+
    $ groups hoge root
    hoge : hpusers
    root : root wheel rvm
 
 ``id -Gn`` と同じコマンドです。
 
+すべてのユーザ・グループを見るには、 `getent group` します。
 
 .. index:: users
 
@@ -2305,11 +2344,12 @@ users
 現在ログインしているユーザの名前を表示します。実行してみましょう。
 
 .. code-block:: sh
-   
+
    $ users
    fairy fairy fairy fairy fairy fairy fairy fairy fairy fairy fairy fairy fairy fairy
 
 妖精さんだらけーーー [#core-users-f]_ 。
+すべてのユーザ・グループを見るには、 `getent group` します。
 
 .. [#core-users-f] はみ出してるし。本当は自分の名字が並んでいただけでした。それだとおもしろくないので妖精さんを並べてみました。英語表記これであってるのかしら。無難に yo-say-san とかにしておいた方がよかったかも？生足魅惑のマーメイド？？つまり上半身は魚？？？妖精さんの上半身は魚…ッ　ざわ・・・ざわ・・・
 
@@ -2321,13 +2361,13 @@ who
 現在ログオンしているユーザの情報を表示します。コマンドの例は下記です。
 
 .. code-block:: sh
-   
+
    who [option] [file] [am i]
 
 原文をよく見ると、「am i」だけ斜体になってないんですよね。ということで実行してみましょう
 
 .. code-block:: sh
-   
+
    $ who am i
    chiba    pts/11       2013-06-23 17:57 (:pts/12:S.10)
 
@@ -2336,11 +2376,11 @@ who
 -a
   --allや ``-b -d --login -p -r -t -T -u`` と同じです
 
--b 
+-b
   --bootと同じです。システムが最後に起動した日時を表示します。uptimeだと起動してからの時間が表示されます。意外と便利かも
 
 .. code-block:: sh
-   
+
    $ who -b
    system boot  2012-12-14 05:16
 
@@ -2348,12 +2388,12 @@ who
   --headingと同じです。表示の際にヘッダをつけます
 
 -l
-  --loginと同じです。訳すのが面倒だったので実際に打つとこんな感じです [#core-who-l]_ 
+  --loginと同じです。訳すのが面倒だったので実際に打つとこんな感じです [#core-who-l]_
 
 .. [#core-who-l] 以前契約していたvalue-serverで試しました。うすうす気づいていたのですが、これ、物理コンソールにrootでログインしっぱなしになってないですかね
 
 .. code-block:: sh
-   
+
    $ who -l
    LOGIN    tty4         May 14 14:01              5500 id=4
    LOGIN    tty2         May 14 14:01              5481 id=2
@@ -2433,7 +2473,7 @@ fingerプロトコルを喋れるサーバにfingerすることができます�
 
 .. code-block:: console
 
-   $ pinky 
+   $ pinky
    Login    Name       TTY      Idle   When         Where
    root     root       pts/0           Jul 28 13:39 hostname.example.com
 
@@ -2456,7 +2496,7 @@ date
 
   date [-u|--utc|--universal] [ MMDDhhmm[[CC]YY][.ss] ]
 
-``-u`` は使う機会はないでしょう [#core-date-u]_ 。6月25日の23時34分45秒に設定したいときはこのように [#core-date-set]_ 
+``-u`` は使う機会はないでしょう [#core-date-u]_ 。6月25日の23時34分45秒に設定したいときはこのように [#core-date-set]_
 
 .. [#core-date-u] amazon awsだと引っかかりそうな。と思ったけど、日にちずれてることもないから、どうでもよかった
 .. [#core-date-set] 正確な時間がズレまくっていると、ntpdでも合わせてくれないので、だいたい近い日時に合わせましょう。ただし、時間を巻き戻す場合は、アプリケーションで不整合が起きることがあるので要注意。本番環境で気軽にやるなよ!!!
@@ -2468,7 +2508,7 @@ date
 時刻の設定はこのへんにして、単独で実行してみます。
 
 .. code-block:: sh
-   
+
    $ date
    Mon Jun 24 00:34:47 JST 2013
 
@@ -2483,7 +2523,7 @@ date
    $ date '+%Y-%m-%d %H:%M:%S'
    2014-07-27 04:48:10
    $ date -d '1 hours ago' +%X
-   23時20分22秒 # 日本語ロケールの場合こうなる 
+   23時20分22秒 # 日本語ロケールの場合こうなる
 
 基本的な書き方はこれでマスターです。例えば、%Yと書くと今年の西暦である2014を表示、%yで西暦の下二桁、つまり、14を表示します。
 気をつけるところは、%が出現する一番最初に「+」の記号をつけること。さもないと、エラーになります。
@@ -2508,12 +2548,12 @@ date --set='+2 minutes'
   現在のシステムの時刻を2分進めます。root権限が必要です。システムの時刻を変更するときは注意だぞ！
 
 date +%s
-  1970年1月1日からの秒を表示します [#core-date-epoch]_ 
+  1970年1月1日からの秒を表示します [#core-date-epoch]_
 
 .. [#core-date-epoch] 俗にいうエポックタイム。-dで日付を指定すればその時点のエポックタイムを表示します
 
-date -d @946684800                                                                                              
-  1970年1月1日から経過した秒数を理解しやすい感じで表示してくれます [#core-date-epoch2]_ 
+date -d @946684800
+  1970年1月1日から経過した秒数を理解しやすい感じで表示してくれます [#core-date-epoch2]_
 
 .. [#core-date-epoch2] Coreutils 5.3.0から機能です。これ以前だと、 -d '1970-01-01 UTC 946684800 seconds'とする
 
@@ -2530,10 +2570,10 @@ date -d @946684800
 .. topic:: 時刻合わせ
 
    サーバの製造元が日本でない場合、製造した現地時間に合わせてあったりします。このとき、OSのisoイメージからマウントして、サーバにOSをインストールすると、BIOSの時刻を引っ張ってくるので時刻がズレます。そういえば、BIOSであわせるの忘れてた(・ω<)となります。仕方ないので最近はこのようにしてます。当たり前ですけど、時刻がずれている場合は、OSをインストールしたらすぐ時刻をあわせましょう。
-   
+
    .. code-block:: sh
-      
-      # ntpdate <ntp server name OR IP address> && \ 
+
+      # ntpdate <ntp server name OR IP address> && \
       > hwclock --systohc && hwclock --adjust
 
 
@@ -2553,7 +2593,7 @@ arch
 
    $ arch
    x86_64
-   $ uname -m  
+   $ uname -m
    x86_64
 
 
@@ -2593,8 +2633,8 @@ uname
 
 .. code-block:: sh
 
-   $ uname -a 
-   Linux e2.valueserver.jp 2.6.32-358.6.1.el6.x86_64 
+   $ uname -a
+   Linux e2.valueserver.jp 2.6.32-358.6.1.el6.x86_64
    #1 SMP Tue Apr 23 19:29:00 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux
 
 オプションは下記の通り。
@@ -2647,7 +2687,7 @@ hostid
 
 なんでやねん。原文の例にはこうあります。
 
-:: 
+::
 
    For example, here’s what it prints on one system I use:
    $ hostid
@@ -2723,7 +2763,7 @@ runcon
    runcon [options] command [args]
 
 -c
-   変更する前にプロセス変更コンテキストを計算する [#core-runcon-c]_ 
+   変更する前にプロセス変更コンテキストを計算する [#core-runcon-c]_
 
 -u,-r,-t,-l
    chcon のオプションと同じ
@@ -2768,7 +2808,7 @@ env
 オプションは下記の通りです
 
 -O,--null
-  出力時に改行しません [#core-env-O]_ 
+  出力時に改行しません [#core-env-O]_
 
 .. [#core-env-O] 新しめのバージョンに入っているオプションらしい
 
@@ -2802,7 +2842,7 @@ nice
 .. code-block:: sh
 
    $ nice
-   0 # current nice 
+   0 # current nice
    $ nice nice
    10
    $ nice -n 19 nice
@@ -2834,7 +2874,7 @@ nohup
 ログアウトしても実行したコマンドを実行し続けることができるコマンドです。
 
 .. code-block:: sh
-   
+
    $ nohup yes asumisu &
    $ logout
 
@@ -2892,7 +2932,7 @@ size
 
 .. code-block:: sh
 
-   tail -f access.log | stdbuf -oL cut -d ' ' -f1 | uniq 
+   tail -f access.log | stdbuf -oL cut -d ' ' -f1 | uniq
 
 このコマンドでは access.log の一意なエントリがあると直ちに出力されます [#core-stdbuf-ex]_ 。
 
@@ -2922,7 +2962,7 @@ timeout
 オプションは下記の通り
 
 --preserve-status
-  タイムアウトを示す具体的な終了ステータスを返します。どのくらいかかるかわからないコマンドを実行するときに便利 [#core-timeout-miss]_ 
+  タイムアウトを示す具体的な終了ステータスを返します。どのくらいかかるかわからないコマンドを実行するときに便利 [#core-timeout-miss]_
 
 --foreground
   正常フォアグラウンドTTYを使用できるように、独立したバックグラウンドプログラムループを作成しません。これは、コマンドが2つの状況で、対話型シェルから直接起動していないコマンドがタイムアウトをサポートするために必要とされます。2つの状況とは、
@@ -3052,7 +3092,7 @@ Coreutils 8.21 (2013-02-14) から使える比較的新しいコマンドです 
 .. [#numfmti] ついでに、4章(fmtとかがあるところ)からこの章に説明が移動してました
 
 .. code-block:: sh
-   
+
    $ numfmt --from=auto 1Mi
    1048576
 
@@ -3163,7 +3203,7 @@ factor
 解説すると、 ``seq`` で1から1000までの数値を出して ``factor`` に食わせます。
 
 .. code-block:: sh
-   
+
    seq 1 1000 | factor | tail
    991: 991
    992: 2 2 2 2 2 31
@@ -3214,7 +3254,7 @@ p
 
 最後に、このコマンドを俺が一番うまく使えるんだ！という Tips をお持ちの方、この環境だとこの辺でこけるといった検証報告をお持ちの方、この説明違うよ!全然違うよ!!ということを思われた方は、筆者 [#hissya]_ まで連絡を頂けると大変ありがたいです。第2版が出るその日までさようなら。
 
-Let's enjoy coreutils life. [#commandlinefu]_ 
+Let's enjoy coreutils life. [#commandlinefu]_
 
 .. [#commandlinefu] ここで書くのも何ですけど、http://www.commandlinefu.com/ が便利
 
@@ -3240,7 +3280,7 @@ Let's enjoy coreutils life. [#commandlinefu]_
 話は変わりますが、私の職場の後輩にも、コマンドの勉強しろと言って、この本を渡しています [#core-hidoi-senpai]_ 。教育機関や企業からの受注をお待ちしております [#core-omachi]_ 。
 
 .. [#tiamaga109] 創作オンリーの即売会・コミティアのカタログのこと
-.. [#core-reject-feature-requests] https://www.gnu.org/software/coreutils/rejected_requests.html 
+.. [#core-reject-feature-requests] https://www.gnu.org/software/coreutils/rejected_requests.html
 .. [#core-hidoi-senpai] ひどい先輩がいたもんだ #おい
 .. [#core-omachi] おい
 
@@ -3259,3 +3299,6 @@ Rust実装
 .. [#4thfinal] 多分
 .. [#jikaisaku] おい！！きいてねーぞ！えーと、次はgnu findutilsとか書けばいいんですかね？？？(乗り気)
 
+第5版おわりに
+-------------
+一年経ちました。前回Finalつってんのに第5版ですよ。何なんですか（逆ギレ　。今回は編集・ビルド・入稿まで2日でやるとか頭おかしい感じでした。一年ぶりくらいにビルドしようとすると、環境がなくなっていたりしてよろしくないですね。今回はそれを見越してsphinx+latexをビルドするためのdockerイメージを作っていました。第1章が2つあるのは見なかったことにして下さい。
