@@ -25,7 +25,7 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.intersphinx', 'sphinx.ext.todo', 'sphinx.ext.coverage', 'sphinx.ext.pngmath', 'sphinx.ext.mathjax', 'sphinx.ext.viewcode', 'sphinxcontrib.blockdiag']
+extensions = ['sphinx.ext.intersphinx', 'sphinx.ext.todo', 'sphinx.ext.coverage', 'sphinx.ext.imgmath', 'sphinx.ext.viewcode', 'sphinxcontrib.blockdiag']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -351,6 +351,6 @@ intersphinx_mapping = {'http://docs.python.org/': None}
 
 blockdiag_fontpath = './ttf/sazanami-gothic.ttf'
 
-blockdiag_tex_image_format = 'PDF'
+blockdiag_latex_image_format = 'PDF'
 
 # pdf_use_toc = True
