@@ -594,9 +594,9 @@ md5sumのオプションが使えます。b2sumだけに追加されたオプシ
 
 .. code-block:: sh
 
-   [root@centos-1gb-sgp1-01 ~]# b2sum /etc/redhat-release
+   $ b2sum /etc/redhat-release
    6e3cdb9cc64ec29b8a11b9f14f6947cb71897404176c874be6d21359035dbcbc4195af6914d902c553b0bfc8b639b62fa4372b4642efc6dccb4f34d9480b52be  /etc/redhat-release
-   [root@centos-1gb-sgp1-01 ~]# b2sum /etc/redhat-release -l 32
+   $ b2sum /etc/redhat-release -l 32
    3a140eda  /etc/redhat-release
 
 
@@ -1338,11 +1338,7 @@ lsのカラー設定 [#dirc]_ 。呪文なので唱えて下さい。実行方�
 -pオプションで設定を見ることが出来ます。
 
 
-.. [#core-owarini1] 各セクションの分量的な意味で
-.. [#core-owarini2] サンプルのコマンドは、実際に仕事で使っているものが多いです
-.. [#core-warini3] 効果は個人差があります
-.. [#hissya] [連絡先] https://twitter.com/tboffice または、 tbofficed@gmail.com まで
-.. [#textbook] 教科書みたいだな
+
 
 
 基本的操作
@@ -2525,7 +2521,7 @@ pinkyっていうのは、指に対しての小指という意味で名づけた
 
 システム～from date to update～
 ================================
-システムの情報を変えたり表示したりします。
+システムの情報を変えたり表示したりします [#systemcontext]_ 。
 
 .. [#systemcontext] 原題は、System context。元ネタは、ひなろじ～from lock & Logic～。個人的に三者三様を超えた癒やしアニメだと思ってるんだけどどうだろう
 
