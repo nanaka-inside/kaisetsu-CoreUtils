@@ -332,7 +332,7 @@ RFC 4648 [#rfc4648]_ に則ってデータを変換するコマンドで、133%�
 
 base32
 ------
-Coreutils 8.25から登場した ``base32`` です。RFC 4648 のBase32を実装したものです [#base32]_ 。デコードも出来ます [#base32decode]_ 。
+Coreutils 8.25から登場。RFC 4648 のBase32を実装したものです [#base32]_ 。デコードも出来ます [#base32decode]_ 。
 
 .. code-block:: sh
 
@@ -342,12 +342,83 @@ Coreutils 8.25から登場した ``base32`` です。RFC 4648 のBase32を実装
 .. [#base32] 経緯：https://bugzilla.redhat.com/show_bug.cgi?id=1250113
 .. [#base32decode] あたりまえだ
 
+.. index:: basenc
+
+basenc [#basenc]_
+-------
+Coreutils 8.31から登場。様々なエンコーディングがこのコマンド一つでできるようになりました。使い方は：
+
+.. code-block:: sh
+
+   basenc encoding [option]… [file]
+   basenc encoding --decode [option]… [file]
+
+encodingは必須です。
+
+.. [#basenc] base encoding由来らしい。詳細はCoreutilsのML参照
+
+--base64
+   base64にエンコードする。-dまたは--decodeオプションとともに使うとデコードする。``base64`` コマンドと同等
+
+--base64url
+   file-and-url-safe base64エンコードする。+と/の代わりに_と-が使われる。-dまたは--decodeオプションとともに使うとデコードする
+
+--base32
+   base64と同様。``base32`` コマンドと同等
+
+--base32hex
+    Hex Alphabet base32にエンコードする。-dまたは--decodeオプションとともに使うとデコードする。エンコードされたデータは '0123456789ABCDEFGHIJKLMNOPQRSTUV=' の文字が使われる
+
+--base64
+   base16(hexadecimal)にエンコードする。-dまたは--decodeオプションとともに使うとデコードする。エンコードされたデータは '0123456789ABCDEF=' の文字が使われる
+
+
+--base2lsbf
+   バイナリ文字列(0と1)にエンコードする。各バイトの最下位ビットが最初になる
+
+--base2lsbf
+   バイナリ文字列(0と1)にエンコードする。各バイトの最上下位ビットが最初になる
+
+--z85
+   Z85(修正Ascii85)にエンコードする。-dまたは--decodeオプションとともに使うとデコードする。エンコードされたデータには '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTU VWXYZ.-:+=^!/\*?&<>()[]{}@%$#' 文字が使われる。--z85でエンコードするときは入力の長さを4の倍数にしなければならない。--z85でデコードするときは、5の倍数でなければならない
+.. code-block:: sh
+
+    $ printf '\376\117\202' | basenc --base64
+    /k+C
+
+    $ printf '\376\117\202' | basenc --base64url
+    _k-C
+
+    $ printf '\376\117\202' | basenc --base32
+    7ZHYE===
+
+    $ printf '\376\117\202' | basenc --base32hex
+    VP7O4===
+
+    $ printf '\376\117\202' | basenc --base16
+    FE4F82
+
+    $ printf '\376\117\202' | basenc --base2lsbf
+    011111111111001001000001
+
+    $ printf '\376\117\202' | basenc --base2msbf
+    111111100100111110000010
+
+    $ printf '\376\117\202\000' | basenc --z85
+    @.FaC
+
+    $ printf 01010100 | basenc --base2msbf --decode
+    T
+
+    $ printf 01010100 | basenc --base2lsbf --decode
+    *
+
 てーさい
 ==============
 
 体裁を整えるコマンドたちです [#teisai]_ 。
 
-.. [#teisai] 原題は、Formatting file contents。「てーさい」の元ネタは、てーきゅう(第9期)です。「ていさい!!」にしても良かったかもしれない。ぶおんぶおん!!フルスロットルで楽器をかきならせ!!なんかよくわかんなくなってきた
+.. [#teisai] 原題は、Formatting file contents。「てーさい」の元ネタは、てーきゅう(第9期)です。「ていさい!!」にしても良かったかも。ぶおんぶおん!!フルスロットルで楽器をかきならせ!!いろいろ混ざってよくわかんなくなってきた
 
 .. index:: fmt
 
