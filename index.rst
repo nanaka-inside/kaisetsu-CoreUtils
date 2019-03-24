@@ -10,6 +10,6 @@
 .. toctree::
    :maxdepth: 3
 
-   # abstract
+   abstract
    all
    afterword
