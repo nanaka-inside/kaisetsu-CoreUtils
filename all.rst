@@ -332,7 +332,7 @@ RFC 4648 [#rfc4648]_ に則ってデータを変換するコマンドで、133%�
 
 base32
 ------
-Coreutils 8.25から登場。RFC 4648 のBase32を実装したものです [#base32]_ 。デコードも出来ます [#base32decode]_ 。
+Coreutils 8.25から登場。RFC 4648 のBase32を実装したものです [#base32]_ 。デコードも出来ます。
 
 .. code-block:: sh
 
@@ -340,7 +340,6 @@ Coreutils 8.25から登場。RFC 4648 のBase32を実装したものです [#bas
    CentOS Linux release 7.2.1511 (Core)
 
 .. [#base32] 経緯：https://bugzilla.redhat.com/show_bug.cgi?id=1250113
-.. [#base32decode] あたりまえだ
 
 .. index:: basenc
 
@@ -1659,7 +1658,7 @@ ln
 mkdir
 -----
 ディレクトリを作ります。押さえておくべきオプションは二つ。パーミッションを指定する ``-m`` 、存在しない2階層以上のディレクトリを作る ``-p`` です [#mkdir]_ 。
-なお、 ``-p`` オプションは、すでに存在するディレクトリを作ってもエラーにならないので、ディレクトリが存在するかどうか判定の判定を横着することができます。といっても、ディレクトリが作れる権限あるかどうか確認しましょう。
+なお ``-p`` オプションは、存在しているディレクトリを再度作ってもエラーになりません。
 
 .. [#mkdir] mkdirとは関係ないけど、自分がつくったディレクトリに ``chmod -x directory`` とかしちゃ駄目だぞ！おっちゃんとの約束だ！(やったことない人はやってみようというフラグ)
 
@@ -1673,11 +1672,9 @@ mkdir
 
 mkfifo
 ------
-名前付きパイプを作ります。パイプとは、 ``|`` です [#mkfifo]_ 。
+名前付きパイプを作ります。パイプとは、 ``|`` です [#mkfifo]_ 。具体例を示します。
 
 .. [#mkfifo] ``|`` は、名前なしパイプ(unnamed pipe)です
-
-具体例を示します。
 
 .. code-block:: sh
 
@@ -1692,8 +1689,9 @@ mkfifo
 
 mknod
 ------
-FIFOや、キャラクタースペシャルファイル、ブロックスペシャルファイルを作ります。
-NAME,TYPE,MAJOR,MINOR,MINORに当たる部分は、カーネルソースのドキュメントか https://www.kernel.org/doc/Documentation/devices.txt を参照してください。
+FIFOや、キャラクタースペシャルファイル、ブロックスペシャルファイルを作ります [#mknod1]_ 。
+
+.. [#mknod1] NAME,TYPE,MAJOR,MINOR,MINORに当たる部分は、カーネルソースのドキュメントか https://www.kernel.org/doc/Documentation/devices.txt を参照
 
 .. code-block:: sh
 
@@ -1950,13 +1948,10 @@ hostというホストへのネットワークの速度を測りたい場合は�
 .. [#yes-net] http://www.commandlinefu.com/commands/view/4434/live-ssh-network-throughput-test
 .. [#yes-seinou] yesというかマシンの性能によるんじゃないかなぁ、などと思う今日この頃
 
-五等分の条件
+条件
 ============
 
-原文はConditions [#gotoubu]_ [#gotoubu2]_ [#gotoubu3]_ 。
-
-.. [#gotoubu] 元ネタは「五等分の花嫁」。貧乏学生・上杉風太郎に家庭教師のアルバイトの話がきたので行ってみると勉強嫌いの五つ子の姉妹だった件
-.. [#gotoubu3] ちょうど５つコマンドがあるからこのような表題に。ということは、もう擬人化できたんじゃね？長女false、次女true、三女test、四女[、五女expr・・・いいのかこれで？
+原文はConditions。
 
 .. index:: false
 
