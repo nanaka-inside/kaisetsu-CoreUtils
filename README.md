@@ -12,7 +12,8 @@
 
 同人誌として本になりました。購入していただけると、筆者のご飯になります。COMIC ZINさんで取り扱っています。
 
-[COMIC ZINさん販売ページ](http://shop.comiczin.jp/products/detail.php?product_id=25728) 第4版が出ました。
+[COMIC ZINさん販売ページ](https://shop.comiczin.jp/products/detail.php?product_id=39292) 第7版が出ました。
+ビルド済みのPDFファイルは[booth](https://dai7sec.booth.pm/items/1564858)や[Gumroad](https://gum.co/kaisetsu-coreutils)にあります。 
 
 # ビルド手順
 1. Sphinxのセットアップ
